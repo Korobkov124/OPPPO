@@ -128,7 +128,7 @@ void Animal::AddToArray(vector<string> tokens, vector<Animal*>& array) {
 	}
 }
 
-void Animal::DelObj() {
+void Animal::DelObj() { //TODO: Допилить все функции overrided
 
 }
 
@@ -144,9 +144,26 @@ void Insect::DelObj() {
 
 }
 
+bool Animal::MatchObj(vector<string> command, vector<Animal*> array) {
+
+}
+
+bool Fish::MatchObj(vector<string> command, vector<Animal*> array) {
+
+}
+
+bool Bird::MatchObj(vector<string> command, vector<Animal*> array) {
+
+}
+
+bool Insect::MatchObj(vector<string> command, vector<Animal*> array) {
+
+}
+
 void Animal::PrintObj() {
 	cout << "Имя: " << name << endl;
 }
+
 
 void Fish::PrintObj() {
 	string placeStr;
