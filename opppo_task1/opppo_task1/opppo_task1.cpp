@@ -99,6 +99,7 @@ void Animal::AddToArray(vector<string> tokens, vector<Animal*>& array) {
 
 		if (stoi(tokens[3]) >= 0) {
 			currentInsect->size = stof(tokens[3]);
+			currentInsect->dateOfOpening = tokens[4];
 			array.push_back(currentInsect);
 			return;
 		}
@@ -144,16 +145,31 @@ void Animal::PrintObj() {
 	cout << "Имя: " << name << endl;
 }
 
-void Fish::PrintObj(){
-	cout << "Имя: " << name << " Место обитания: " << livingPlace << endl;
+void Fish::PrintObj() {
+	string placeStr;
+	switch (livingPlace) {
+		case river:
+			placeStr = "Река";
+			break;
+		case lake:
+			placeStr = "Озеро";
+			break;
+		case sea:
+			placeStr = "Море";
+			break;
+		default:
+			placeStr = "Неизвестно";
+			break;
+	}
+	cout << "Имя: " << name << " Место обитания: " << placeStr << endl;
 }
 
 void Bird::PrintObj() {
-	cout << "Имя: " << name << " Скорость полета: " << fast << endl;
+	cout << "Имя: " << name << " Скорость полета: " << fast << "м/с" << endl;
 }
 	
 void Insect::PrintObj() {
-	cout << "Имя: " << name << " Размер: " << size << " Дата открытия: " << dateOfOpening << endl;
+	cout << "Имя: " << name << " Размер: " << size << "см^2" << " Дата открытия: " << dateOfOpening << endl;
 }
 
 void Animal::PrintArray(vector<Animal*> array)
