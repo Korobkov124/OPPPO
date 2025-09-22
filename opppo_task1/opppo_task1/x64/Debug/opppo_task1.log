@@ -1,2 +1,4 @@
 ﻿  opppo_task1.cpp
-  opppo_task1.vcxproj -> C:\Users\andre\Source\Repos\OPPPO\opppo_task1\x64\Debug\opppo_task1.exe
+opppo_task1.obj : error LNK2001: неразрешенный внешний символ "public: virtual void __cdecl Animal::DelObj(void)" (?DelObj@Animal@@UEAAXXZ).
+opppo_task1.obj : error LNK2001: неразрешенный внешний символ "public: virtual bool __cdecl Animal::MatchObj(class std::vector<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::allocator<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > > >,class std::vector<class Animal *,class std::allocator<class Animal *> >)" (?MatchObj@Animal@@UEAA_NV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@V?$vector@PEAVAnimal@@V?$allocator@PEAVAnimal@@@std@@@3@@Z).
+C:\Users\andre\Source\Repos\OPPPO\opppo_task1\x64\Debug\opppo_task1.exe : fatal error LNK1120: неразрешенных внешних элементов: 2

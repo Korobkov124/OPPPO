@@ -23,7 +23,9 @@ public:
 
 	static void AddToArray(vector<string> tokens, vector<Animal*>& array);
 
-	static void DelObjs(vector<string> command, vector<Animal*> array);
+	virtual void DelObj();
+
+	virtual bool MatchObj(vector<string> command, vector<Animal*> array);
 
 	virtual void PrintObj();
 
@@ -41,6 +43,10 @@ public:
 	placeEnum livingPlace;
 
 	void PrintObj() override;
+
+	void DelObj() override;
+
+	bool MatchObj(vector<string> command, vector<Animal*> array) override;
 };
 
 class Bird : public Animal {
@@ -48,6 +54,10 @@ public:
 	float fast = 0;
 
 	void PrintObj() override;
+
+	void DelObj() override;
+
+	bool MatchObj(vector<string> command, vector<Animal*> array) override;
 };
 
 class Insect : public Animal {
@@ -57,6 +67,10 @@ public:
 	string dateOfOpening;
 
 	void PrintObj() override;
+
+	void DelObj() override;
+
+	bool MatchObj(vector<string> command, vector<Animal*> array) override;
 };
 
 void Animal::AddToArray(vector<string> tokens, vector<Animal*>& array) {
@@ -114,31 +128,20 @@ void Animal::AddToArray(vector<string> tokens, vector<Animal*>& array) {
 	}
 }
 
-void Animal::DelObjs(vector<string> command, vector<Animal*> array) {
-	if (command.size() == 4) {
-		if (command[2] == "==") { //TODO: Сделай общую функцию del внутри базового класса Animal,
-			                      //      а потом перегрузи в дочерних классах по полям!
-		}
-		if (command[2] == "!=") {
+void Animal::DelObj() {
 
-		}
-		if (command[2] == "<") {
+}
 
-		}
-		if (command[2] == ">") {
+void Fish::DelObj() {
 
-		}
-		if (command[2] == "<=") {
+}
 
-		}
-		if (command[2] == ">=") {
+void Bird::DelObj() {
 
-		}
-	}
-	else {
-		throw string("Неправильная строка!\n");
-		return;
-	}
+}
+
+void Insect::DelObj() {
+
 }
 
 void Animal::PrintObj() {
@@ -215,7 +218,6 @@ void ParseTxt() {
 			}
 
 			if (tokens[0] == "REM") {
-				Animal::DelObjs(tokens, array);
 			}
 
 			if (tokens[0] == "PRINT") {
