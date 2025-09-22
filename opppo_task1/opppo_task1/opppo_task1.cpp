@@ -21,11 +21,13 @@ class Animal { //TODO: Рефакторинг классов на заголов
 public:
 	string name;
 
-	static void AddToArray(vector<string> tokens, vector<Animal> array);
+	static void AddToArray(vector<string> tokens, vector<Animal*>& array);
 
-	static void DelObjs(vector<string> command, vector<Animal> array);
+	static void DelObjs(vector<string> command, vector<Animal*> array);
 
-	static void PrintArray(vector<Animal> array);
+	virtual void PrintObj();
+
+	static void PrintArray(vector<Animal*> array);
 };
 
 class Fish : public Animal {
@@ -37,11 +39,15 @@ public:
 	};
 
 	placeEnum livingPlace;
+
+	void PrintObj() override;
 };
 
 class Bird : public Animal {
 public:
 	float fast = 0;
+
+	void PrintObj() override;
 };
 
 class Insect : public Animal {
@@ -49,36 +55,36 @@ public:
 	float size = 0;
 
 	string dateOfOpening;
+
+	void PrintObj() override;
 };
 
-void Animal::AddToArray(vector<string> tokens, vector<Animal> array) {
+void Animal::AddToArray(vector<string> tokens, vector<Animal*>& array) {
 
 	if (tokens[1] == "Fish" && tokens.size() == 4) {
-		Fish currentFish;
-		currentFish.name = tokens[2];
+		Fish* currentFish = new Fish;
+		currentFish->name = tokens[2];
 
 		if (stoi(tokens[3]) >= Fish::river &&
 			stoi(tokens[3]) <= Fish::sea) {
-			currentFish.livingPlace = static_cast<Fish::placeEnum>(stoi(tokens[3]));
+			currentFish->livingPlace = static_cast<Fish::placeEnum>(stoi(tokens[3]));
 			array.push_back(currentFish);
+			return;
 		}
 		else {
 			throw string("Неправильное значение места обитания рыбы " + tokens[2] + "!\n");
 			return;
 		}
 	}
-	else {
-		throw string("Неправильная строка!\n");
-		return;
-	}
 
-	if (tokens[1] == "Bird" && tokens.size() == 4) {
-		Bird currentBird;
-		currentBird.name = tokens[2];
+	else if (tokens[1] == "Bird" && tokens.size() == 4) {
+		Bird* currentBird = new Bird;
+		currentBird->name = tokens[2];
 
 		if (stof(tokens[3]) > 0) {
-			currentBird.fast = stof(tokens[3]);
+			currentBird->fast = stof(tokens[3]);
 			array.push_back(currentBird);
+			return;
 		}
 		else {
 			throw string("Неправильное значение скорости птицы " + tokens[2] + "!\n");
@@ -86,18 +92,15 @@ void Animal::AddToArray(vector<string> tokens, vector<Animal> array) {
 		}
 
 	}
-	else {
-		throw string("Неправильная строка!\n");
-		return;
-	}
 
-	if (tokens[1] == "Insect" && tokens.size() == 5) {
-		Insect currentInsect;
-		currentInsect.name = tokens[2];
+	else if (tokens[1] == "Insect" && tokens.size() == 5) {
+		Insect* currentInsect = new Insect;
+		currentInsect->name = tokens[2];
 
 		if (stoi(tokens[3]) >= 0) {
-			currentInsect.size = stof(tokens[3]);
+			currentInsect->size = stof(tokens[3]);
 			array.push_back(currentInsect);
+			return;
 		}
 		else {
 			throw string("Неправильное значение размера жука " + tokens[2] + "!\n");
@@ -110,7 +113,7 @@ void Animal::AddToArray(vector<string> tokens, vector<Animal> array) {
 	}
 }
 
-void Animal::DelObjs(vector<string> command, vector<Animal> array) {
+void Animal::DelObjs(vector<string> command, vector<Animal*> array) {
 	if (command.size() == 4) {
 		if (command[2] == "==") { //TODO: Сделай общую функцию del внутри базового класса Animal,
 			                      //      а потом перегрузи в дочерних классах по полям!
@@ -137,15 +140,31 @@ void Animal::DelObjs(vector<string> command, vector<Animal> array) {
 	}
 }
 
-void Animal::PrintArray(vector<Animal> array) {
-	cout << "---------- Вывод элементов контейнера в консоль ----------" << endl;
-	for (int i = 0; i < array.size(); i++)
-	{
-		cout << array[i]; //TODO: Сделай общую функцию print внутри базового класса Animal,
-	}                     //      а потом перегрузи в дочерних классах по полям!
+void Animal::PrintObj() {
+	cout << "Имя: " << name << endl;
 }
 
-vector<string> splitString(const string& str, char delimiter) {
+void Fish::PrintObj(){
+	cout << "Имя: " << name << " Место обитания: " << livingPlace << endl;
+}
+
+void Bird::PrintObj() {
+	cout << "Имя: " << name << " Скорость полета: " << fast << endl;
+}
+	
+void Insect::PrintObj() {
+	cout << "Имя: " << name << " Размер: " << size << " Дата открытия: " << dateOfOpening << endl;
+}
+
+void Animal::PrintArray(vector<Animal*> array)
+{
+	cout << "---------- Вывод элементов контейнера в консоль ----------\n";
+	for (int i = 0; i < array.size(); i++) {
+		array[i]->PrintObj();
+	}
+}
+
+static vector<string> splitString(const string& str, char delimiter) {
 	vector<string> tokens;
 	string token;
 	istringstream tokenStream(str);
@@ -164,7 +183,7 @@ void ParseTxt() {
 	string currentLine;
 	ifstream iftxt("parsed.txt");
 	int lineCount = 0;
-	vector<Animal> array;
+	vector<Animal*> array;
 
 	if (iftxt.is_open()) {
 
@@ -184,7 +203,7 @@ void ParseTxt() {
 			}
 
 			if (tokens[0] == "PRINT") {
-
+				Animal::PrintArray(array);
 			}
 		}
 	}
