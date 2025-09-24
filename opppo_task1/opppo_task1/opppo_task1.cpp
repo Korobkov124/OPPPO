@@ -28,7 +28,7 @@ class Animal { //TODO: Рефакторинг классов на заголов
 public:
 	string name;
 
-	static void AddToArray(vector<string> tokens, vector<Animal*>& array);
+	static void AddToArray(vector<string>& tokens, vector<Animal*>& array);
 
 	static void DelObj(vector<string> tokens, vector<Animal*>& array);
 
@@ -48,7 +48,7 @@ public:
 		sea = 3
 	};
 
-	placeEnum livingPlace = river;
+	placeEnum livingPlace = placeEnumDefault;
 
 	void PrintObj() override;
 
@@ -75,7 +75,7 @@ public:
 	bool MatchObj(vector<string> command) override;
 };
 
-void Animal::AddToArray(vector<string> tokens, vector<Animal*>& array) {
+void Animal::AddToArray(vector<string>& tokens, vector<Animal*>& array) {
 
 	if (tokens[1] == "Fish" && tokens.size() == 4) {
 		Fish* currentFish = new Fish;
