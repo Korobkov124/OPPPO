@@ -1,0 +1,55 @@
+@startuml work1
+' Установка стиля
+skinparam classAttributeIconSize 0
+
+' Базовый класс Animal
+class Animal {
+    - name : string
+    --
+    + AddToArray(tokens: vector<string>, array: vector<Animal*>&) : void
+    + DelObj(tokens: vector<string>, array: vector<Animal*>&) : void
+    + MatchObj(command: vector<string>) : bool
+    + PrintObj() : void
+    + PrintArray(array: vector<Animal*>) : void
+}
+
+' Наследники
+class Fish {
+    - livingPlace : placeEnum
+    --
+    + PrintObj() : void
+    + MatchObj(command: vector<string>) : bool
+}
+
+class Bird {
+    - fast : float
+    --
+    + PrintObj() : void
+    + MatchObj(command: vector<string>) : bool
+}
+
+class Insect {
+    - size : float
+    - dateOfOpening : string
+    --
+    + PrintObj() : void
+    + MatchObj(command: vector<string>) : bool
+}
+
+' Перечисление для Fish
+enum placeEnum {
+    placeEnumDefault = 0
+    river = 1
+    lake = 2
+    sea = 3
+}
+
+' Наследование
+Animal <|-- Fish
+Animal <|-- Bird
+Animal <|-- Insect
+
+' Связь класса Fish с перечислением placeEnum
+Fish --> placeEnum : uses
+
+@enduml
