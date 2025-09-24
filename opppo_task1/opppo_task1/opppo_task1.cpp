@@ -17,15 +17,22 @@ using namespace std;
 //REM name == 'Scopa'
 //PRINT
 
+int parseDate(const std::string& date) {
+	int day = std::stoi(date.substr(0, 2));
+	int month = std::stoi(date.substr(3, 2));
+	int year = std::stoi(date.substr(6, 4));
+	return year * 10000 + month * 100 + day;
+}
+
 class Animal { //TODO: Рефакторинг классов на заголовочные файлы, по феншую!
 public:
 	string name;
 
 	static void AddToArray(vector<string> tokens, vector<Animal*>& array);
 
-	virtual void DelObj();
+	static void DelObj(vector<string> tokens, vector<Animal*>& array);
 
-	virtual bool MatchObj(vector<string> command, vector<Animal*> array);
+	virtual bool MatchObj(vector<string> command);
 
 	virtual void PrintObj();
 
@@ -35,18 +42,17 @@ public:
 class Fish : public Animal {
 public:
 	enum placeEnum {
-		river = 0,
-		lake = 1,
-		sea = 2
+		placeEnumDefault = 0,
+		river = 1,
+		lake = 2,
+		sea = 3
 	};
 
-	placeEnum livingPlace;
+	placeEnum livingPlace = river;
 
 	void PrintObj() override;
 
-	void DelObj() override;
-
-	bool MatchObj(vector<string> command, vector<Animal*> array) override;
+	bool MatchObj(vector<string> command) override;
 };
 
 class Bird : public Animal {
@@ -55,9 +61,7 @@ public:
 
 	void PrintObj() override;
 
-	void DelObj() override;
-
-	bool MatchObj(vector<string> command, vector<Animal*> array) override;
+	bool MatchObj(vector<string> command) override;
 };
 
 class Insect : public Animal {
@@ -68,9 +72,7 @@ public:
 
 	void PrintObj() override;
 
-	void DelObj() override;
-
-	bool MatchObj(vector<string> command, vector<Animal*> array) override;
+	bool MatchObj(vector<string> command) override;
 };
 
 void Animal::AddToArray(vector<string> tokens, vector<Animal*>& array) {
@@ -128,36 +130,72 @@ void Animal::AddToArray(vector<string> tokens, vector<Animal*>& array) {
 	}
 }
 
-void Animal::DelObj() { //TODO: Допилить все функции overrided
-
+void Animal::DelObj(vector<string> command, vector<Animal*>& array) {
+	array.erase(
+		remove_if(array.begin(), array.end(),
+			[&](Animal* obj) {
+				return obj->MatchObj(command);
+			}),
+		array.end()
+	);
 }
 
-void Fish::DelObj() {
+bool Animal::MatchObj(vector<string> command) {
+	if (command[1] == "name") {
+		string value = command[3];
+		if (command[2] == "==") return name == value;
+		if (command[2] == "!=") return name != value;
+	}
 
+	return false;
 }
 
-void Bird::DelObj() {
+bool Fish::MatchObj(vector<string> command) {
+	if (command[1] == "livingPlace") {
+		int value = stoi(command[3]);
+		if (command[2] == "==") return livingPlace == value;
+		if (command[2] == "!=") return livingPlace != value;
+	}
 
+	return Animal::MatchObj(command);
 }
 
-void Insect::DelObj() {
+bool Bird::MatchObj(vector<string> command) {
+	if (command[1] == "fast") {
+		int value = stoi(command[3]);
+		if (command[2] == "==") return fast == value;
+		if (command[2] == "!=") return fast != value;
+		if (command[2] == ">") return fast > value;
+		if (command[2] == "<") return fast < value;
+		if (command[2] == ">=") return fast >= value;
+		if (command[2] == "<=") return fast <= value;
+	}
 
+	return Animal::MatchObj(command);
 }
 
-bool Animal::MatchObj(vector<string> command, vector<Animal*> array) {
+bool Insect::MatchObj(vector<string> command) {
+	if (command[1] == "size") {
+		int value = stoi(command[3]);
+		if (command[2] == "==") return size == value;
+		if (command[2] == "!=") return size != value;
+		if (command[2] == ">") return size > value;
+		if (command[2] == "<") return size < value;
+		if (command[2] == ">=") return size >= value;
+		if (command[2] == "<=") return size <= value;
+	}
+	else if (command[1] == "dateOfOpening") {
+		int valueDate = parseDate(command[3]);
+		int valueOwnDate = parseDate(dateOfOpening);
+		if (command[2] == "==") return valueOwnDate == valueDate;
+		if (command[2] == "!=") return valueOwnDate != valueDate;
+		if (command[2] == ">") return valueOwnDate > valueDate;
+		if (command[2] == "<") return valueOwnDate < valueDate;
+		if (command[2] == ">=") return valueOwnDate >= valueDate;
+		if (command[2] == "<=") return valueOwnDate <= valueDate;
+	}
 
-}
-
-bool Fish::MatchObj(vector<string> command, vector<Animal*> array) {
-
-}
-
-bool Bird::MatchObj(vector<string> command, vector<Animal*> array) {
-
-}
-
-bool Insect::MatchObj(vector<string> command, vector<Animal*> array) {
-
+	return Animal::MatchObj(command);
 }
 
 void Animal::PrintObj() {
@@ -235,6 +273,7 @@ void ParseTxt() {
 			}
 
 			if (tokens[0] == "REM") {
+				Animal::DelObj(tokens, array);
 			}
 
 			if (tokens[0] == "PRINT") {
