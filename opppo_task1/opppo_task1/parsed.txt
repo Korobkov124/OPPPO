@@ -1,0 +1,8 @@
+ADD Fish Karp 1
+ADD Fish Skopa 2
+ADD Bird Skopa 3.2
+ADD Bird Eagle 10.5
+ADD Insect Bug 5 10.03.1900
+ADD Insect Skopa 3 12.01.1890
+REM dateOfOpening != 10.03.1900
+PRINT
