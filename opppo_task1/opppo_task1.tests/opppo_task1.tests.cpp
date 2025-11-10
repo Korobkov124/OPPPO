@@ -19,8 +19,16 @@ namespace ParserTests
 		}
 
 		TEST_METHOD(TestParseInvalidDate) {
-			auto func = [] { Parser::parseDate("13.13.2013"); };
-			Assert::ExpectException<std::invalid_argument>(func);
+			auto func_invalid_day = [] { Parser::parseDate("31.13.2013"); };
+			auto func_invalid_month = [] { Parser::parseDate("13.13.2013"); };
+			auto func_invalid_type = [] { Parser::parseDate("ae.ae.ae"); };
+			Assert::ExpectException<std::invalid_argument>(func_invalid_day);
+			Assert::ExpectException<std::invalid_argument>(func_invalid_month);
+			Assert::ExpectException<std::invalid_argument>(func_invalid_type);
+		}
+
+		TEST_METHOD(TestParseTxt) {
+
 		}
 	};
 }

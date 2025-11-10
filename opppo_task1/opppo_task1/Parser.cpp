@@ -12,10 +12,12 @@ int Parser::parseDate(const std::string& date) {
 		month = std::stoi(date.substr(3, 2));
 		year = std::stoi(date.substr(6, 4));
 	}
-	catch (std::out_of_range) {
-		throw std::out_of_range("Некорректное число в дате!");
+	catch (std::invalid_argument) {
+		throw std::invalid_argument("Некорректное число в дате!");
 	}
-
+	catch (std::out_of_range) {
+		throw std::out_of_range("Слишком большое число!");
+	}
 	if (!Parser::ValidateDate(day, month)) {
 		throw std::invalid_argument("Некорректное значение даты!");
 	}
