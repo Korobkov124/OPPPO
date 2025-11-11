@@ -1,3 +1,5 @@
+#include <string>
+#include <vector>
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "../opppo_task1/Parser.h"
@@ -12,23 +14,36 @@ namespace ParserTests
 	public:
 		TEST_METHOD(TestParseDate)
 		{
-			Assert::AreEqual(19000310, Parser::parseDate("10.03.1900"));
-			Assert::AreEqual(19010310, Parser::parseDate("10.03.1901"));
-			Assert::AreEqual(19001110, Parser::parseDate("10.11.1900"));
-			Assert::AreEqual(19000311, Parser::parseDate("11.03.1900"));
-		}
+			auto funcParseDate = [](const std::string& testLine) {
+				return [testLine]() { return Parser::parseDate(testLine); };
+				};
 
+			Assert::IsTrue(19000310 == funcParseDate("10.03.1900")());
+			Assert::IsTrue(19010310 == funcParseDate("10.03.1901")());
+			Assert::IsTrue(19001110 == funcParseDate("10.11.1900")());
+			Assert::IsTrue(19000311 == funcParseDate("11.03.1900")());
+		}
 		TEST_METHOD(TestParseInvalidDate) {
-			auto func_invalid_day = [] { Parser::parseDate("31.13.2013"); };
-			auto func_invalid_month = [] { Parser::parseDate("13.13.2013"); };
-			auto func_invalid_type = [] { Parser::parseDate("ae.ae.ae"); };
-			Assert::ExpectException<std::invalid_argument>(func_invalid_day);
-			Assert::ExpectException<std::invalid_argument>(func_invalid_month);
-			Assert::ExpectException<std::invalid_argument>(func_invalid_type);
+			auto funcInvalidDate = [](const std::string& testLine) {
+				return [testLine]() { return Parser::parseDate(testLine); };
+			};
+
+			Assert::ExpectException<std::invalid_argument>(funcInvalidDate("32.10.2010"));
+			Assert::ExpectException<std::invalid_argument>(funcInvalidDate("13.13.2013"));
+			Assert::ExpectException<std::invalid_argument>(funcInvalidDate("ae.ae.ae"));
 		}
+		TEST_METHOD(TestSplitString) {
+			auto funcSplitString = [](const std::string& testLine, const char& delimiter) {
+				return [testLine, delimiter]() { return Parser::splitString(testLine, delimiter); };
+				};
 
+			std::vector<std::string> testVector{ "ADD", "Karp", "1" };
+			Assert::IsTrue(testVector == funcSplitString("ADD Karp 1", ' ')());
+			Assert::IsTrue(testVector == funcSplitString("ADD.Karp.1", '.')());
+			Assert::IsTrue(testVector == funcSplitString("ADD  Karp 1", ' ')());
+		}
 		TEST_METHOD(TestParseTxt) {
-
+			
 		}
 	};
 }

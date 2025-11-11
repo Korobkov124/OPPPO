@@ -7,7 +7,7 @@
 
 class Parser {
 public:
-	static void ParseTxt();
+	static void ParseTxt(std::string filePath);
 
 	static int parseDate(const std::string& date);
 

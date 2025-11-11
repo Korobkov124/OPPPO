@@ -12,12 +12,13 @@ int Parser::parseDate(const std::string& date) {
 		month = std::stoi(date.substr(3, 2));
 		year = std::stoi(date.substr(6, 4));
 	}
-	catch (std::invalid_argument) {
-		throw std::invalid_argument("Некорректное число в дате!");
+	catch (const std::invalid_argument&) {
+		throw std::invalid_argument("Неверное число в дате!");
 	}
-	catch (std::out_of_range) {
+	catch (const std::out_of_range&) {
 		throw std::out_of_range("Слишком большое число!");
 	}
+
 	if (!Parser::ValidateDate(day, month)) {
 		throw std::invalid_argument("Некорректное значение даты!");
 	}
@@ -25,9 +26,10 @@ int Parser::parseDate(const std::string& date) {
 	return year * 10000 + month * 100 + day;
 }
 
-void Parser::ParseTxt() {
+
+void Parser::ParseTxt(std::string filePath) {
 	std::string currentLine;
-	std::ifstream iftxt("parsed.txt");
+	std::ifstream iftxt(filePath);
 	int lineCount = 0;
 	std::vector<Animal*> array;
 
