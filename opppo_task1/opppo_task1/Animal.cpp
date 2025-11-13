@@ -4,24 +4,25 @@
 #include "Insect.h"
 
 void Animal::AddToArray(std::vector<std::string>& tokens, std::vector<Animal*>& array) {
-
-	if (tokens[1] == "Fish" && tokens.size() == 4) {
+	if (tokens[0] == "Fish" && tokens.size() == 3) {
+		tokens = std::vector<std::string>(tokens.begin() + 1, tokens.end());
 		Fish::AddToArray(tokens, array);
 		return;
 	}
 
-	else if (tokens[1] == "Bird" && tokens.size() == 4) {
+	else if (tokens[0] == "Bird" && tokens.size() == 3) {
+		tokens = std::vector<std::string>(tokens.begin() + 1, tokens.end());
 		Bird::AddToArray(tokens, array);
 		return;
 	}
 
-	else if (tokens[1] == "Insect" && tokens.size() == 5) {
+	else if (tokens[0] == "Insect" && tokens.size() == 4) {
+		tokens = std::vector<std::string>(tokens.begin() + 1, tokens.end());
 		Insect::AddToArray(tokens, array);
 		return;
 	}
-	else {
-		throw std::string("Неправильная строка!\n");
-		return;
+	else{
+		throw std::invalid_argument("Некорректное название типа!");
 	}
 }
 
@@ -36,10 +37,10 @@ void Animal::DelObj(std::vector<std::string> command, std::vector<Animal*>& arra
 }
 
 bool Animal::MatchObj(std::vector<std::string> command) {
-	if (command[1] == "name") {
-		std::string value = command[3];
-		if (command[2] == "==") return name == value;
-		if (command[2] == "!=") return name != value;
+	if (command[0] == "name") {
+		std::string value = command[2];
+		if (command[1] == "==") return name == value;
+		if (command[1] == "!=") return name != value;
 	}
 
 	return false;

@@ -1,14 +1,14 @@
 #include "Bird.h"
 
 bool Bird::MatchObj(std::vector<std::string> command) {
-	if (command[1] == "fast") {
-		int value = stoi(command[3]);
-		if (command[2] == "==") return fast == value;
-		if (command[2] == "!=") return fast != value;
-		if (command[2] == ">") return fast > value;
-		if (command[2] == "<") return fast < value;
-		if (command[2] == ">=") return fast >= value;
-		if (command[2] == "<=") return fast <= value;
+	if (command[0] == "fast") {
+		float value = stof(command[2]);
+		if (command[1] == "==") return fast == value;
+		if (command[1] == "!=") return fast != value;
+		if (command[1] == ">") return fast > value;
+		if (command[1] == "<") return fast < value;
+		if (command[1] == ">=") return fast >= value;
+		if (command[1] == "<=") return fast <= value;
 	}
 
 	return Animal::MatchObj(command);
@@ -20,15 +20,15 @@ void Bird::PrintObj() {
 
 void Bird::AddToArray(std::vector<std::string>& tokens, std::vector<Animal*>& array) {
 	Bird* currentBird = new Bird;
-	currentBird->name = tokens[2];
+	currentBird->name = tokens[0];
 
-	if (stof(tokens[3]) > 0) {
-		currentBird->fast = stof(tokens[3]);
+	if (stof(tokens[1]) > 0) {
+		currentBird->fast = stof(tokens[1]);
 		array.push_back(currentBird);
 		return;
 	}
 	else {
-		throw std::string("Неправильное значение скорости птицы " + tokens[2] + "!\n");
+		throw std::invalid_argument("Неправильное значение скорости птицы " + tokens[0] + "!\n");
 		return;
 	}
 }

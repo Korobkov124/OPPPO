@@ -1,10 +1,10 @@
 #include "Fish.h"
 
 bool Fish::MatchObj(std::vector<std::string> command) {
-	if (command[1] == "livingPlace") {
-		int value = stoi(command[3]);
-		if (command[2] == "==") return livingPlace == value;
-		if (command[2] == "!=") return livingPlace != value;
+	if (command[0] == "livingPlace") {
+		int value = stoi(command[2]);
+		if (command[1] == "==") return livingPlace == value;
+		if (command[1] == "!=") return livingPlace != value;
 	}
 
 	return Animal::MatchObj(command);
@@ -31,16 +31,16 @@ void Fish::PrintObj() {
 
 void Fish::AddToArray(std::vector<std::string>& tokens, std::vector<Animal*>& array) {
 	Fish* currentFish = new Fish;
-	currentFish->name = tokens[2];
+	currentFish->name = tokens[0];
 
-	if (stoi(tokens[3]) >= Fish::river &&
-		stoi(tokens[3]) <= Fish::sea) {
-		currentFish->livingPlace = static_cast<Fish::placeEnum>(stoi(tokens[3]));
+	if (stoi(tokens[1]) >= Fish::river &&
+		stoi(tokens[1]) <= Fish::sea) {
+		currentFish->livingPlace = static_cast<Fish::placeEnum>(stoi(tokens[1]));
 		array.push_back(currentFish);
 		return;
 	}
 	else {
-		throw std::string("Ќеправильное значение места обитани€ рыбы " + tokens[2] + "!\n");
+		throw std::invalid_argument("Ќеправильное значение места обитани€ рыбы " + tokens[0] + "!\n");
 		return;
 	}
 }
