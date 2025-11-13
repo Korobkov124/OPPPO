@@ -53,7 +53,7 @@ void Parser::ParseTxt(std::string filePath) {
 			}
 
 			if (tokens[0] == "PRINT") {
-				//tokens = std::vector<std::string>(tokens.begin() + 1, tokens.end());
+				tokens = std::vector<std::string>(tokens.begin() + 1, tokens.end());
 				Animal::PrintArray(array);
 			}
 		}
