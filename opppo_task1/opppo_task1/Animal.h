@@ -1,0 +1,20 @@
+#pragma once
+#include <iostream>
+#include <string>
+#include <vector>
+#include "Parser.h"
+
+class Animal {
+public:
+	std::string name;
+
+	static void AddToArray(std::vector<std::string>& tokens, std::vector<Animal*>& array);
+
+	static void DelObj(std::vector<std::string> tokens, std::vector<Animal*>& array);
+
+	virtual bool MatchObj(std::vector<std::string> command);
+
+	virtual void PrintObj();
+
+	static void PrintArray(std::vector<Animal*> array);
+};
