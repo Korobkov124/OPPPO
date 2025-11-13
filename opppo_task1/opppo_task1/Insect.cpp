@@ -1,24 +1,24 @@
 #include "Insect.h"
 
 bool Insect::MatchObj(std::vector<std::string> command) {
-	if (command[1] == "size") {
-		int value = stoi(command[3]);
-		if (command[2] == "==") return size == value;
-		if (command[2] == "!=") return size != value;
-		if (command[2] == ">") return size > value;
-		if (command[2] == "<") return size < value;
-		if (command[2] == ">=") return size >= value;
-		if (command[2] == "<=") return size <= value;
+	if (command[0] == "size") {
+		int value = stoi(command[2]);
+		if (command[1] == "==") return size == value;
+		if (command[1] == "!=") return size != value;
+		if (command[1] == ">") return size > value;
+		if (command[1] == "<") return size < value;
+		if (command[1] == ">=") return size >= value;
+		if (command[1] == "<=") return size <= value;
 	}
-	else if (command[1] == "dateOfOpening") {
-		int valueDate = Parser::parseDate(command[3]);
+	else if (command[0] == "dateOfOpening") {
+		int valueDate = Parser::parseDate(command[2]);
 		int valueOwnDate = Parser::parseDate(dateOfOpening);
-		if (command[2] == "==") return valueOwnDate == valueDate;
-		if (command[2] == "!=") return valueOwnDate != valueDate;
-		if (command[2] == ">") return valueOwnDate > valueDate;
-		if (command[2] == "<") return valueOwnDate < valueDate;
-		if (command[2] == ">=") return valueOwnDate >= valueDate;
-		if (command[2] == "<=") return valueOwnDate <= valueDate;
+		if (command[1] == "==") return valueOwnDate == valueDate;
+		if (command[1] == "!=") return valueOwnDate != valueDate;
+		if (command[1] == ">") return valueOwnDate > valueDate;
+		if (command[1] == "<") return valueOwnDate < valueDate;
+		if (command[1] == ">=") return valueOwnDate >= valueDate;
+		if (command[1] == "<=") return valueOwnDate <= valueDate;
 	}
 
 	return Animal::MatchObj(command);
@@ -30,16 +30,16 @@ void Insect::PrintObj() {
 
 void Insect::AddToArray(std::vector<std::string>& tokens, std::vector<Animal*>& array) {
 	Insect* currentInsect = new Insect;
-	currentInsect->name = tokens[2];
+	currentInsect->name = tokens[0];
 
-	if (stoi(tokens[3]) >= 0) {
-		currentInsect->size = stof(tokens[3]);
-		currentInsect->dateOfOpening = tokens[4];
+	if (stoi(tokens[1]) >= 0) {
+		currentInsect->size = stof(tokens[1]);
+		currentInsect->dateOfOpening = tokens[2];
 		array.push_back(currentInsect);
 		return;
 	}
 	else {
-		throw std::string("Ќеправильное значение размера жука " + tokens[2] + "!\n");
+		throw std::invalid_argument("Ќеправильное значение размера жука " + tokens[0] + "!\n");
 		return;
 	}
 }

@@ -43,14 +43,17 @@ void Parser::ParseTxt(std::string filePath) {
 			if (tokens.empty()) continue;
 
 			if (tokens[0] == "ADD") {
+				tokens = std::vector<std::string>(tokens.begin() + 1, tokens.end());
 				Animal::AddToArray(tokens, array);
 			}
 
 			if (tokens[0] == "REM") {
+				tokens = std::vector<std::string>(tokens.begin() + 1, tokens.end());
 				Animal::DelObj(tokens, array);
 			}
 
 			if (tokens[0] == "PRINT") {
+				//tokens = std::vector<std::string>(tokens.begin() + 1, tokens.end());
 				Animal::PrintArray(array);
 			}
 		}
