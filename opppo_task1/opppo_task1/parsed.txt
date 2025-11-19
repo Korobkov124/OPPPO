@@ -1,0 +1,8 @@
+ADD Fish Karp 1
+ADD Fish Skopa 2
+ADD Bird Skopa 3.2
+ADD Bird Eagle 10.5
+ADD Insect Bug 5 12.12.1890
+ADD Insect Skopa 3 12.12.1890
+REM fast == 3.2
+PRINT
