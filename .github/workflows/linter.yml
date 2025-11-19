@@ -1,0 +1,57 @@
+name: Code Linter
+
+on:
+  push:
+    branches: ["dev", "main"]
+  pull_request:
+    branches: ["main", "dev"]
+
+jobs:
+  clang-tidy:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Visual Studio
+        uses: ilammy/msvc-dev-cmd@v1
+        
+      - name: Install Clang-Tidy
+        shell: pwsh
+        run: |
+          choco install llvm -y
+          refreshenv
+          
+      - name: Run Clang-Tidy
+        shell: pwsh
+        run: |
+          $ClangTidy = "C:\Program Files\LLVM\bin\clang-tidy.exe"
+          if (Test-Path $ClangTidy) {
+            # Анализ основных исходных файлов
+            Get-ChildItem -Path "opppo_task1" -Recurse -Include "*.cpp", "*.h" | ForEach-Object {
+              Write-Host "Analyzing: $($_.FullName)"
+              & $ClangTidy $_.FullName -- -std=c++17 -Iopppo_task1.core
+            }
+          } else {
+            Write-Host "Clang-Tidy not found, skipping linting"
+          }
+        continue-on-error: true
+
+  cppcheck:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Install Cppcheck
+        shell: pwsh
+        run: |
+          choco install cppcheck -y
+          
+      - name: Run Cppcheck
+        shell: pwsh
+        run: |
+          cppcheck --enable=all --suppress=missingIncludeSystem --inline-suppr "opppo_task1" 2> cppcheck_results.txt
+          Get-Content cppcheck_results.txt
