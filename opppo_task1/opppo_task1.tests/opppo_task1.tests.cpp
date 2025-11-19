@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <typeinfo>
+#include <type_traits>
 #include "CppUnitTest.h"
 #include "../opppo_task1.core/Parser.h"
 #include "../opppo_task1.core/Animal.h"
