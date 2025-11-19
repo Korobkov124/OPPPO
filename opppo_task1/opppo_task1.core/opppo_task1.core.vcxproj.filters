@@ -47,5 +47,11 @@
     <ClCompile Include="Parser.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
+    <ClCompile Include="pch.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Файлы ресурсов</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
