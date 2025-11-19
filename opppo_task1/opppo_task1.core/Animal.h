@@ -5,20 +5,21 @@
 #include <vector>
 #include "Parser.h"
 
-class Animal {
+class Animal
+{
 public:
-	std::string name;
+    std::string name;
 
-	static void AddToArray(std::vector<std::string>& tokens, std::vector<std::unique_ptr<Animal>>& array);
+    static void AddToArray(std::vector<std::string>& tokens, std::vector<std::unique_ptr<Animal>>& array);
 
-	static void DelObj(std::vector<std::string> tokens, std::vector<std::unique_ptr<Animal>>& array);
+    static void DelObj(std::vector<std::string> tokens, std::vector<std::unique_ptr<Animal>>& array);
 
-	virtual bool MatchObj(std::vector<std::string> command);
+    virtual bool MatchObj(std::vector<std::string> command);
 
-	virtual void PrintObj();
+    virtual void PrintObj();
 
-	static void PrintArray(const std::vector<std::unique_ptr<Animal>>& array);
-	
-	virtual ~Animal() = default;
+    static void PrintArray(const std::vector<std::unique_ptr<Animal>>& array);
+
+    virtual ~Animal() = default;
 };
 #endif // ANIMAL_H
