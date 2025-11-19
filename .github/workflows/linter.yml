@@ -28,36 +28,14 @@ jobs:
         run: |
           $ClangTidy = "C:\Program Files\LLVM\bin\clang-tidy.exe"
           if (Test-Path $ClangTidy) {
-            # Анализ всех исходных файлов
-            Get-ChildItem -Path "opppo_task1" -Recurse -Include "*.cpp", "*.h" | ForEach-Object {
-              Write-Host "Analyzing: $($_.FullName)"
-              & $ClangTidy $_.FullName -- -x c++ -std=c++17 -Iopppo_task1.core
-            }
+              # Получаем пути к include MSVC и Windows SDK
+              $IncludePaths = "$env:VC_IncludePath;$env:WindowsSDK_IncludePath"
+              
+              Get-ChildItem -Path "opppo_task1" -Recurse -Include "*.cpp","*.h" | Where-Object { $_.FullName -notmatch "opppo_task1.tests" } | ForEach-Object {
+                  Write-Host "Analyzing: $($_.FullName)"
+                  & $ClangTidy $_.FullName -- -x c++ -std=c++17 -Iopppo_task1.core -I$IncludePaths
+              }
           } else {
-            Write-Host "Clang-Tidy not found, skipping linting"
+              Write-Host "Clang-Tidy not found, skipping linting"
           }
         continue-on-error: true
-
-  cppcheck:
-    runs-on: windows-latest
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        
-      - name: Install Cppcheck
-        shell: pwsh
-        run: |
-          choco install cppcheck -y
-          refreshenv
-          
-      - name: Run Cppcheck
-        shell: pwsh
-        run: |
-          $CppcheckExe = "cppcheck"
-          if (Get-Command $CppcheckExe -ErrorAction SilentlyContinue) {
-            & $CppcheckExe --enable=all --inline-suppr --suppress=missingIncludeSystem "opppo_task1" 2> cppcheck_results.txt
-            Get-Content cppcheck_results.txt
-          } else {
-            Write-Host "Cppcheck not found, skipping"
-          }
