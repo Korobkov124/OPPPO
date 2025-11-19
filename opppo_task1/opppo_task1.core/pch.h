@@ -5,4 +5,4 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#endif PCH_H
+#endif // !PCH_H
