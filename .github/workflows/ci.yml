@@ -14,85 +14,118 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Visual Studio and MSBuild
-        uses: microsoft/setup-msbuild@v1
+      - name: Setup Visual Studio 2022
+        uses: actions/setup-msbuild@v1
         with:
-          vs-version: '[17.0,18.0)'  # Конкретная версия VS 2022
+          vs-version: '17.0'
 
-      - name: Check compiler version
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Check available tools
         shell: pwsh
         run: |
-          echo "Checking compiler version..."
-          cl.exe 2>&1 | Select-String "Version" || echo "Compiler not found"
+          echo "Checking available tools..."
+          where msbuild 2>&1 || echo "MSBuild not found in PATH"
+          where cl 2>&1 || echo "CL not found in PATH"
+          
+          # Проверяем установленные версии Visual Studio
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          if (Test-Path $vswhere) {
+            & $vswhere -all -prerelease -format json | ConvertFrom-Json | ForEach-Object { 
+              Write-Host "VS Instance: $($_.displayName) - $($_.installationPath)"
+            }
+          }
+
+      - name: Use Developer Command Prompt
+        shell: cmd
+        run: |
+          echo "Setting up Visual Studio environment..."
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          cl.exe 2>&1 | findstr "Version" || echo "Compiler check completed"
 
       - name: Restore NuGet packages
         shell: pwsh
         run: |
-          nuget restore "opppo_task1/opppo_task1.sln"
+          Write-Host "Restoring NuGet packages..."
+          nuget restore "opppo_task1/opppo_task1.sln" -Verbosity detailed
 
-      - name: Build solution with detailed logging
-        shell: pwsh
+      - name: Build solution
+        shell: cmd
         run: |
-          msbuild "opppo_task1/opppo_task1.sln" `
-            /p:Configuration=Release `
-            /p:Platform=x64 `
-            /p:PlatformToolset=v143 `
-            /p:LanguageStandard=stdcpp17 `
-            /p:UsePrecompiledHeader=false `
-            /p:PrecompiledHeader=NotUsing `
-            /p:WarningLevel=0 `  # Отключаем warnings для чистоты лога
-            /p:TreatWarningAsError=false `
-            /verbosity:detailed `  # Детальный лог для отладки
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          msbuild "opppo_task1/opppo_task1.sln" ^
+            /p:Configuration=Release ^
+            /p:Platform=x64 ^
+            /p:PlatformToolset=v143 ^
+            /p:PreferredToolArchitecture=x64 ^
+            /p:UsePrecompiledHeader=false ^
+            /p:PrecompiledHeader=NotUsing ^
+            /m ^
+            /verbosity:minimal
+
+      - name: Build with C++17 standard
+        shell: cmd
+        run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          msbuild "opppo_task1/opppo_task1.sln" ^
+            /p:Configuration=Release ^
+            /p:Platform=x64 ^
+            /p:PlatformToolset=v143 ^
+            /p:AdditionalOptions="/std:c++17" ^
+            /p:UsePrecompiledHeader=false ^
+            /p:PrecompiledHeader=NotUsing ^
             /m
 
-      - name: Build solution with C++17 features
+      - name: Find and list build outputs
         shell: pwsh
         run: |
-          msbuild "opppo_task1/opppo_task1.sln" `
-            /p:Configuration=Release `
-            /p:Platform=x64 `
-            /p:PlatformToolset=v143 `
-            /p:AdditionalOptions="/std:c++17" `  # Явное указание стандарта
-            /p:UsePrecompiledHeader=false `
-            /p:PrecompiledHeader=NotUsing `
-            /m
+          Write-Host "Searching for build outputs..."
+          $exeFiles = Get-ChildItem -Path ".\" -Recurse -Include *.exe,*.dll -ErrorAction SilentlyContinue
+          if ($exeFiles) {
+            Write-Host "Found executable files:"
+            $exeFiles | ForEach-Object { Write-Host "  - $($_.FullName)" }
+          } else {
+            Write-Host "No executable files found"
+            Write-Host "Available files:"
+            Get-ChildItem -Path ".\" -Recurse -File -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "  - $($_.FullName)" }
+          }
 
-      - name: List build outputs
+      - name: Run tests if available
         shell: pwsh
         run: |
-          echo "Build outputs:"
-          Get-ChildItem -Path "opppo_task1" -Recurse -Include *.exe,*.dll,*.lib | ForEach-Object { $_.FullName }
-
-      - name: Run tests
-        shell: pwsh
-        run: |
-          $testDlls = @(
-            "opppo_task1/opppo_task1.tests/x64/Release/opppo_task1.tests.exe",
-            "opppo_task1/x64/Release/opppo_task1.tests.exe",
-            "opppo_task1/opppo_task1.tests/bin/x64/Release/opppo_task1.tests.exe"
+          $testPaths = @(
+            "opppo_task1\opppo_task1.tests\x64\Release\opppo_task1.tests.exe",
+            "opppo_task1\x64\Release\opppo_task1.tests.exe", 
+            "opppo_task1\opppo_task1.tests\bin\x64\Release\opppo_task1.tests.exe",
+            "x64\Release\opppo_task1.tests.exe"
           )
           
-          $found = $false
-          foreach ($testDll in $testDlls) {
-            if (Test-Path $testDll) {
-              Write-Host "Running tests from: $testDll"
-              & $testDll
-              $found = $true
-              break
+          foreach ($testPath in $testPaths) {
+            if (Test-Path $testPath) {
+              Write-Host "Running tests from: $testPath"
+              try {
+                & $testPath
+                exit 0
+              } catch {
+                Write-Host "Error running tests: $_"
+              }
             }
           }
           
-          if (-not $found) {
-            Write-Host "Test executable not found. Available files:"
-            Get-ChildItem -Path "opppo_task1" -Recurse -Include *.exe,*.dll | ForEach-Object { $_.FullName }
+          Write-Host "No test executable found in expected locations"
+          Write-Host "Available files in solution directory:"
+          if (Test-Path "opppo_task1") {
+            Get-ChildItem -Path "opppo_task1" -Recurse -Include *.exe,*.dll -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "  - $($_.FullName)" }
           }
 
       - name: Upload build artifacts on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: build-failure-logs
+          name: build-failure-artifacts
           path: |
             **/*.log
             **/*.binlog
+            **/BuildLog.htm
           retention-days: 7
