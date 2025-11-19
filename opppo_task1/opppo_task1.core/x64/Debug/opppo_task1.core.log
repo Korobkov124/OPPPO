@@ -1,4 +1,8 @@
-﻿  Animal.cpp
+﻿  Проверка источников на наличие зависимостей модуля…
+  pch.h
+  Компиляция…
+  pch.h
+  Animal.cpp
   Bird.cpp
   Fish.cpp
   Insect.cpp

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Bird.h"
 
 bool Bird::MatchObj(std::vector<std::string> command) {
