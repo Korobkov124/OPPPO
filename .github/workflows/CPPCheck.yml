@@ -1,30 +1,37 @@
-name: Static Code Analysis
+name: Static Analysis
 
 on:
   push:
     branches: ["dev", "main"]
   pull_request:
-    branches: ["dev", "main"]
+    branches: ["main", "dev"]
 
 jobs:
   cppcheck:
-    name: Cppcheck Lint
     runs-on: windows-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Cppcheck
+      - name: Download portable Cppcheck
         shell: pwsh
         run: |
-          choco install cppcheck -y
-          refreshenv
+          $cppcheckUrl = "https://sourceforge.net/projects/cppcheck/files/2.14.0/cppcheck-2.14.0.zip/download"
+          $zipPath = "$env:RUNNER_TEMP\cppcheck.zip"
+          Invoke-WebRequest -Uri $cppcheckUrl -OutFile $zipPath
+          Expand-Archive -Path $zipPath -DestinationPath "$env:RUNNER_TEMP\cppcheck"
+          $env:CPPCHECK_EXE = "$env:RUNNER_TEMP\cppcheck\cppcheck-2.14.0\cppcheck.exe"
+          Write-Host "Cppcheck executable path: $env:CPPCHECK_EXE"
 
       - name: Run Cppcheck
         shell: pwsh
         run: |
-          cppcheck --enable=all --suppress=missingIncludeSystem --inline-suppr "opppo_task1" 2> cppcheck_results.txt
-          Write-Host "Cppcheck results:"
-          Get-Content cppcheck_results.txt
-        continue-on-error: true
+          if (Test-Path $env:CPPCHECK_EXE) {
+            & $env:CPPCHECK_EXE --enable=all --inline-suppr --std=c++17 "opppo_task1" 2> cppcheck_results.txt
+            Write-Host "Cppcheck results:"
+            Get-Content cppcheck_results.txt
+          } else {
+            Write-Host "Cppcheck not found!"
+            exit 1
+          }
