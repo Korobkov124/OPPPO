@@ -14,24 +14,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download portable Cppcheck
+      - name: Install Cppcheck
         shell: pwsh
-        run: |
-          $cppcheckUrl = "https://sourceforge.net/projects/cppcheck/files/2.14.0/cppcheck-2.14.0.zip/download"
-          $zipPath = "$env:RUNNER_TEMP\cppcheck.zip"
-          Invoke-WebRequest -Uri $cppcheckUrl -OutFile $zipPath
-          Expand-Archive -Path $zipPath -DestinationPath "$env:RUNNER_TEMP\cppcheck"
-          $env:CPPCHECK_EXE = "$env:RUNNER_TEMP\cppcheck\cppcheck-2.14.0\cppcheck.exe"
-          Write-Host "Cppcheck executable path: $env:CPPCHECK_EXE"
-
+        run: choco install cppcheck -y
+      
       - name: Run Cppcheck
         shell: pwsh
-        run: |
-          if (Test-Path $env:CPPCHECK_EXE) {
-            & $env:CPPCHECK_EXE --enable=all --inline-suppr --std=c++17 "opppo_task1" 2> cppcheck_results.txt
-            Write-Host "Cppcheck results:"
-            Get-Content cppcheck_results.txt
-          } else {
-            Write-Host "Cppcheck not found!"
-            exit 1
-          }
+        run: cppcheck --enable=all --inline-suppr --std=c++17 "opppo_task1" 2> cppcheck_results.txt
+
