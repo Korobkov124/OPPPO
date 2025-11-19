@@ -1,0 +1,37 @@
+name: Profile Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["dev", "main"]
+
+jobs:
+  build-and-profile:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Visual Studio
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Build solution Release x64
+        shell: cmd
+        run: |
+          msbuild opppo_task1\opppo_task1.sln /p:Configuration=Release /p:Platform=x64 /m
+
+      - name: Run profiler with Windows Performance Recorder
+        shell: cmd
+        run: |
+          REM Запуск WPR для CPU профилирования на 30 секунд
+          wpr -start GeneralProfile -filemode
+          opppo_task1\x64\Release\opppo_task1.exe
+          wpr -stop opppo_profile.etl
+          echo "Profiling data saved to opppo_profile.etl"
+
+      - name: Upload profiling results
+        uses: actions/upload-artifact@v3
+        with:
+          name: opppo-profile
+          path: opppo_profile.etl
