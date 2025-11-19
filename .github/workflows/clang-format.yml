@@ -27,13 +27,13 @@ jobs:
             & $clangFormat -i $_.FullName
           }
 
-      - name: Commit formatted code
+      - name: Commit and push formatted code
         shell: pwsh
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config --local user.name "github-actions"
           git config --local user.email "github-actions@github.com"
           git add .
           git commit -m "Apply clang-format" || Write-Host "No changes to commit"
           git push https://$env:GH_PAT@github.com/Korobkov124/OPPPO.git HEAD:dev
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
