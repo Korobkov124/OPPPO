@@ -1,5 +1,5 @@
 ﻿#include <clocale>
-#include "./Parser.h"
+#include "../opppo_task1.core/Parser.h"
 
 int main() {
 	setlocale(LC_ALL, "ru");

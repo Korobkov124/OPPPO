@@ -15,36 +15,36 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\opppo_task1\Animal.h">
+    <ClInclude Include="Animal.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\opppo_task1\Bird.h">
+    <ClInclude Include="Bird.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\opppo_task1\Fish.h">
+    <ClInclude Include="Fish.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\opppo_task1\Insect.h">
+    <ClInclude Include="Insect.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\opppo_task1\Parser.h">
+    <ClInclude Include="Parser.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\opppo_task1\Parser.cpp">
+    <ClCompile Include="Animal.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
-    <ClCompile Include="..\opppo_task1\Insect.cpp">
+    <ClCompile Include="Bird.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
-    <ClCompile Include="..\opppo_task1\Fish.cpp">
+    <ClCompile Include="Fish.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
-    <ClCompile Include="..\opppo_task1\Bird.cpp">
+    <ClCompile Include="Insect.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
-    <ClCompile Include="..\opppo_task1\Animal.cpp">
+    <ClCompile Include="Parser.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
   </ItemGroup>

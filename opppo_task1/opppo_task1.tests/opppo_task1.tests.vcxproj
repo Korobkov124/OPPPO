@@ -163,9 +163,6 @@
     <ProjectReference Include="..\opppo_task1.core\opppo_task1.core.vcxproj">
       <Project>{b6b1148b-8ea6-4aa3-b029-26858f2cb47a}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\opppo_task1\opppo_task1.vcxproj">
-      <Project>{f6c13f53-90d3-4151-abaf-b712faf27b01}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

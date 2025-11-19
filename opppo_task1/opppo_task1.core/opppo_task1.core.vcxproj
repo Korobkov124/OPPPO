@@ -19,18 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\opppo_task1\Animal.h" />
-    <ClInclude Include="..\opppo_task1\Bird.h" />
-    <ClInclude Include="..\opppo_task1\Fish.h" />
-    <ClInclude Include="..\opppo_task1\Insect.h" />
-    <ClInclude Include="..\opppo_task1\Parser.h" />
+    <ClInclude Include="Animal.h" />
+    <ClInclude Include="Bird.h" />
+    <ClInclude Include="Fish.h" />
+    <ClInclude Include="Insect.h" />
+    <ClInclude Include="Parser.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\opppo_task1\Animal.cpp" />
-    <ClCompile Include="..\opppo_task1\Bird.cpp" />
-    <ClCompile Include="..\opppo_task1\Fish.cpp" />
-    <ClCompile Include="..\opppo_task1\Insect.cpp" />
-    <ClCompile Include="..\opppo_task1\Parser.cpp" />
+    <ClCompile Include="Animal.cpp" />
+    <ClCompile Include="Bird.cpp" />
+    <ClCompile Include="Fish.cpp" />
+    <ClCompile Include="Insect.cpp" />
+    <ClCompile Include="Parser.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

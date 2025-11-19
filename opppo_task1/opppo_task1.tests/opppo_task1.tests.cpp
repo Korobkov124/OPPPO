@@ -2,11 +2,11 @@
 #include <vector>
 #include <typeinfo>
 #include "CppUnitTest.h"
-#include "../opppo_task1/Parser.h"
-#include "../opppo_task1/Animal.h"
-#include "../opppo_task1/Fish.h"
-#include "../opppo_task1/Bird.h"
-#include "../opppo_task1/Insect.h"
+#include "../opppo_task1.core/Parser.h"
+#include "../opppo_task1.core/Animal.h"
+#include "../opppo_task1.core/Fish.h"
+#include "../opppo_task1.core/Bird.h"
+#include "../opppo_task1.core/Insect.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
