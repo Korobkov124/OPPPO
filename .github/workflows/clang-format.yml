@@ -1,8 +1,9 @@
-name: Auto Format Code
+name: Auto format
 
 on:
-  workflow_dispatch:
   push:
+    branches: ["dev", "main"]
+  pull_request:
     branches: ["dev", "main"]
 
 jobs:
@@ -13,17 +14,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Clang
+      - name: Install Clang-Format
         shell: pwsh
         run: |
           choco install llvm -y
           refreshenv
 
-      - name: Format code
+      - name: Run Clang-Format
         shell: pwsh
         run: |
           $clangFormat = "C:\Program Files\LLVM\bin\clang-format.exe"
-          Get-ChildItem -Path "opppo_task1" -Recurse -Include "*.cpp","*.h" | ForEach-Object {
+          Get-ChildItem -Path "opppo_task1" -Recurse -Include "*.cpp", "*.h" | ForEach-Object {
             & $clangFormat -i $_.FullName
           }
 
