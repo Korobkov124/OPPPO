@@ -25,4 +25,8 @@ jobs:
             /p:Platform=x64 `
             /p:CL=/utf-8 `
             /p:UsePrecompiledHeader=false `
-            /p:PrecompiledHeader=NotUsing
+            /p:PrecompiledHeader=NotUsing `
+            /p:PlatformToolset=v143 `
+            /p:CLToolExe=cl.exe `
+            /p:CLToolPath="C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\**version**\bin\Hostx64\x64" `
+            /p:AdditionalOptions="/std:c++17"
