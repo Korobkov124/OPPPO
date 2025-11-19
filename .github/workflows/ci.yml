@@ -18,11 +18,11 @@ jobs:
         uses: microsoft/setup-msbuild@v1
 
       - name: Build solution
+        shell: pwsh
         run: |
-          & "C:\Program Files\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe" "opppo_task1/opppo_task1.sln" `
+          msbuild "opppo_task1/opppo_task1.sln" `
             /p:Configuration=Release `
             /p:Platform=x64 `
             /p:CL=/utf-8 `
-            /p:UsePrecompiledHeader=false `
-            /p:LanguageStandard=c++17
+            /p:UsePrecompiledHeader=false
 
