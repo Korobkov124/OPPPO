@@ -16,7 +16,7 @@ bool Bird::MatchObj(std::vector<std::string> command) {
 }
 
 void Bird::PrintObj() {
-	std::cout << "Имя: " << name << " Скорость полета: " << fast << "м/с" << std::endl;
+	std::cout << "Name: " << name << " Fast: " << fast << "m/s" << std::endl;
 }
 
 void Bird::AddToArray(std::vector<std::string>& tokens, std::vector<std::unique_ptr<Animal>>& array) {
@@ -29,7 +29,7 @@ void Bird::AddToArray(std::vector<std::string>& tokens, std::vector<std::unique_
 		return;
 	}
 	else {
-		throw std::invalid_argument("Неправильное значение скорости птицы " + tokens[0] + "!\n");
+		throw std::invalid_argument("Incorrect value of speed " + tokens[0] + "!\n");
 		return;
 	}
 }

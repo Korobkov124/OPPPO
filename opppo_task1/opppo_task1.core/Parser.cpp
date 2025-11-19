@@ -4,7 +4,7 @@
 
 int Parser::parseDate(const std::string& date) {
 	if (date.size() != 10 || date[2] != '.' || date[5] != '.') {
-		throw std::invalid_argument("Некорректный формат даты!");
+		throw std::invalid_argument("Incorrect format of date!");
 	}
 
 	int day, month, year;
@@ -14,14 +14,14 @@ int Parser::parseDate(const std::string& date) {
 		year = std::stoi(date.substr(6, 4));
 	}
 	catch (const std::invalid_argument&) {
-		throw std::invalid_argument("Неверное число в дате!");
+		throw std::invalid_argument("Incorrect value of date!");
 	}
 	catch (const std::out_of_range&) {
-		throw std::out_of_range("Слишком большое число!");
+		throw std::out_of_range("Too large value of date!");
 	}
 
 	if (!Parser::ValidateDate(day, month)) {
-		throw std::invalid_argument("Некорректное значение даты!");
+		throw std::invalid_argument("Incorrect value of day|month!");
 	}
 
 	return year * 10000 + month * 100 + day;
@@ -38,7 +38,7 @@ void Parser::ParseTxt(std::string filePath) {
 
 		while (getline(iftxt, currentLine)) {
 			lineCount++;
-			std::cout << "Команда " << lineCount << ": " << currentLine << std::endl;
+			std::cout << "Command " << lineCount << ": " << currentLine << std::endl;
 			std::vector<std::string> tokens = Parser::splitString(currentLine, ' ');
 
 			if (tokens.empty()) continue;

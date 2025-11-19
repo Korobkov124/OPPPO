@@ -23,7 +23,7 @@ void Animal::AddToArray(std::vector<std::string>& tokens, std::vector<std::uniqu
 		return;
 	}
 	else{
-		throw std::invalid_argument("Некорректное название типа!");
+		throw std::invalid_argument("Incorrect type name!");
 	}
 }
 
@@ -48,12 +48,12 @@ bool Animal::MatchObj(std::vector<std::string> command) {
 }
 
 void Animal::PrintObj() {
-	std::cout << "Имя: " << name << std::endl;
+	std::cout << "Name: " << name << std::endl;
 }
 
 void Animal::PrintArray(const std::vector<std::unique_ptr<Animal>>& array)
 {
-	std::cout << "---------- Вывод элементов контейнера в консоль ----------\n";
+	std::cout << "---------- Console output ----------\n";
 	for (int i = 0; i < array.size(); i++) {
 		array[i]->PrintObj();
 	}

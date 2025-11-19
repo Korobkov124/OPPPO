@@ -15,19 +15,19 @@ void Fish::PrintObj() {
 	std::string placeStr;
 	switch (livingPlace) {
 	case river:
-		placeStr = "Река";
+		placeStr = "River";
 		break;
 	case lake:
-		placeStr = "Озеро";
+		placeStr = "Lake";
 		break;
 	case sea:
-		placeStr = "Море";
+		placeStr = "Sea";
 		break;
 	default:
-		placeStr = "Неизвестно";
+		placeStr = "Unknow";
 		break;
 	}
-	std::cout << "Имя: " << name << " Место обитания: " << placeStr << std::endl;
+	std::cout << "Name: " << name << " Living Place: " << placeStr << std::endl;
 }
 
 void Fish::AddToArray(std::vector<std::string>& tokens, std::vector<std::unique_ptr<Animal>>& array) {
@@ -41,7 +41,7 @@ void Fish::AddToArray(std::vector<std::string>& tokens, std::vector<std::unique_
 		return;
 	}
 	else {
-		throw std::invalid_argument("Неправильное значение места обитания рыбы " + tokens[0] + "!\n");
+		throw std::invalid_argument("Incerrect value of leaving place " + tokens[0] + "!\n");
 		return;
 	}
 }

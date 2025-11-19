@@ -26,7 +26,7 @@ bool Insect::MatchObj(std::vector<std::string> command) {
 }
 
 void Insect::PrintObj() {
-	std::cout << "Имя: " << name << " Размер: " << size << "см^2" << " Дата открытия: " << dateOfOpening << std::endl;
+	std::cout << "Name: " << name << " Size: " << size << "sm^2" << " Date of opening: " << dateOfOpening << std::endl;
 }
 
 void Insect::AddToArray(std::vector<std::string>& tokens, std::vector<std::unique_ptr<Animal>>& array) {
@@ -40,7 +40,7 @@ void Insect::AddToArray(std::vector<std::string>& tokens, std::vector<std::uniqu
 		return;
 	}
 	else {
-		throw std::invalid_argument("Неправильное значение размера жука " + tokens[0] + "!\n");
+		throw std::invalid_argument("Incorrect value of size " + tokens[0] + "!\n");
 		return;
 	}
 }
