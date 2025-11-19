@@ -1,4 +1,4 @@
-name: Auto Format
+name: Clang Format
 
 on:
   push:
@@ -13,32 +13,34 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          persist-credentials: false
 
-      - name: Install Clang-Format
+      - name: Install Clang
         shell: pwsh
-        run: |
-          choco install llvm -y
-          refreshenv
+        run: choco install llvm -y
 
-      - name: Run Clang-Format
+      - name: Apply clang-format
         shell: pwsh
+        env:
+          GH_PAT: ${{ secrets.PAT }}
         run: |
           $clangFormat = "C:\Program Files\LLVM\bin\clang-format.exe"
-          Get-ChildItem -Path "opppo_task1" -Recurse -Include "*.cpp", "*.h" | ForEach-Object {
+          if (-Not (Test-Path $clangFormat)) {
+            Write-Host "clang-format not found"
+            exit 1
+          }
+
+          Get-ChildItem -Path "opppo_task1" -Recurse -Include "*.cpp","*.h" | ForEach-Object {
             & $clangFormat -i $_.FullName
           }
 
-      - name: Commit and push formatted code
-        shell: pwsh
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config --local user.name "github-actions"
+          git config --local user.email "github-actions@github.com"
           git add .
-          git diff --cached --quiet || (
-              git commit -m "Apply clang-format"
-              git push https://$env:GH_PAT@github.com/Korobkov124/OPPPO.git HEAD:dev
-          )
+
+          git diff --cached --quiet
+          if ($LASTEXITCODE -ne 0) {
+            git commit -m "Apply clang-format"
+            git push https://$env:GH_PAT@github.com/Korobkov124/OPPPO.git HEAD:dev
+          } else {
+            Write-Host "No formatting changes detected"
+          }
