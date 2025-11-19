@@ -14,27 +14,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Visual Studio 2022
-        uses: microsoft/setup-visualstudio@v1
-        with:
-          version: '17.4.4'
-          include: 'Microsoft.VisualStudio.Workload.NativeDesktop'
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
 
       - name: Build solution
         shell: pwsh
         run: |
-          msbuild "opppo_task1/opppo_task1.core/opppo_task1.core.vcxproj" `
-            /p:Configuration=Release `
-            /p:Platform=x64 `
-            /p:CL=/utf-8 `
-            /p:CppStandard=c++17 `
-            /p:UsePrecompiledHeader=false `
-            /p:PrecompiledHeader=NotUsing
-
+          # Собираем основной проект
           msbuild "opppo_task1/opppo_task1.sln" `
             /p:Configuration=Release `
             /p:Platform=x64 `
-            /p:CL=/utf-8 `
+            /p:PlatformToolset=v143 `
             /p:CppStandard=c++17 `
             /p:UsePrecompiledHeader=false `
-            /p:PrecompiledHeader=NotUsing
+            /p:PrecompiledHeader=NotUsing `
+            /m
+
+      - name: Run tests (optional)
+        shell: pwsh
+        run: |
+          $testDll = "opppo_task1/opppo_task1.tests/x64/Release/opppo_task1.tests.exe"
+          if (Test-Path $testDll) {
+            & $testDll
+          } else {
+            Write-Host "Test executable not found"
+          }
