@@ -1,9 +1,11 @@
 name: Build project
+
 on:
   push:
     branches: ["dev"]
   pull_request:
     branches: ["main", "dev"]
+
 jobs:
   build:
     runs-on: windows-latest
@@ -14,7 +16,12 @@ jobs:
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1
-      
-      - name: Build solution
-        run: msbuild "opppo_task1/opppo_task1.sln" /t:Rebuild /p:Configuration=Release /p:Platform=x64 /p:CharacterSet=Unicode /p:UsePrecompiledHeader=false /p:CL=/std:c++17 /p:CL=/utf-8
 
+      - name: Build solution
+        run: |
+          msbuild opppo_task1/opppo_task1.sln ^
+            /p:Configuration=Release ^
+            /p:Platform=x64 ^
+            /p:CL=/utf-8 ^
+            /p:UsePrecompiledHeader=false ^
+            /p:LanguageStandard=c++17
