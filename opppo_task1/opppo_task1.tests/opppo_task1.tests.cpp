@@ -2,6 +2,7 @@
 #include <vector>
 #include <typeinfo>
 #include <type_traits>
+#include <memory>
 #include "CppUnitTest.h"
 #include "../opppo_task1.core/Parser.h"
 #include "../opppo_task1.core/Animal.h"
@@ -19,15 +20,14 @@ namespace opppoTests {
 	}
 	
 	template<typename T>
-	concept AnimalsType =
-		std::is_same_v<T, Animal> ||
-		std::is_same_v<T, Fish> ||
-		std::is_same_v<T, Bird> ||
-		std::is_same_v<T, Insect>;
-
-	template<AnimalsType T>
 	static void funcAddToArray(const std::vector<std::string>& testTokens, std::vector<std::unique_ptr<Animal>>& testArray)
 	{
+		static_assert(
+			std::is_same<T, Animal>::value ||
+			std::is_same<T, Fish>::value ||
+			std::is_same<T, Bird>::value ||
+			std::is_same<T, Insect>::value);
+
 		auto tokens = testTokens;
 		T::AddToArray(tokens, testArray);
 	}
