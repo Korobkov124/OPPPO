@@ -1,0 +1,41 @@
+name: Build and Test
+
+on:
+  push:
+    branches: ["dev", "main"]
+  pull_request:
+    branches: ["dev", "main"]
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSVC environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Build solution
+        shell: cmd
+        run: |
+          msbuild opppo_task1\opppo_task1.sln ^
+            /p:Configuration=Release ^
+            /p:Platform=x64 ^
+            /p:AdditionalOptions="/std:c++17" ^
+            /m
+
+      - name: Run tests
+        shell: cmd
+        run: |
+          for /r %%i in (*tests.dll) do set TEST_DLL=%%i
+          if "%TEST_DLL%"=="" (
+            echo "❌ Test DLL not found"
+            dir /s /b *tests.dll
+            exit 1
+          )
+          echo "Running tests: %TEST_DLL%"
+          "%VSINSTALLDIR%\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" "%TEST_DLL%"
