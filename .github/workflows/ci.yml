@@ -17,7 +17,7 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1
           
-      - name: Build solution without PCH
+      - name: Build solution
         shell: pwsh
         run: |
           msbuild "opppo_task1/opppo_task1.sln" `
