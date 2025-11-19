@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opppo_task1", "opppo_task1\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opppo_task1.tests", "opppo_task1.tests\opppo_task1.tests.vcxproj", "{F5A8E5C9-F6B2-8569-237A-3EF04CB8FBFF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opppo_task1.core", "opppo_task1.core\opppo_task1.core.vcxproj", "{B6B1148B-8EA6-4AA3-B029-26858F2CB47A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{F5A8E5C9-F6B2-8569-237A-3EF04CB8FBFF}.Release|x64.Build.0 = Release|x64
 		{F5A8E5C9-F6B2-8569-237A-3EF04CB8FBFF}.Release|x86.ActiveCfg = Release|Win32
 		{F5A8E5C9-F6B2-8569-237A-3EF04CB8FBFF}.Release|x86.Build.0 = Release|Win32
+		{B6B1148B-8EA6-4AA3-B029-26858F2CB47A}.Debug|x64.ActiveCfg = Debug|x64
+		{B6B1148B-8EA6-4AA3-B029-26858F2CB47A}.Debug|x64.Build.0 = Debug|x64
+		{B6B1148B-8EA6-4AA3-B029-26858F2CB47A}.Debug|x86.ActiveCfg = Debug|Win32
+		{B6B1148B-8EA6-4AA3-B029-26858F2CB47A}.Debug|x86.Build.0 = Debug|Win32
+		{B6B1148B-8EA6-4AA3-B029-26858F2CB47A}.Release|x64.ActiveCfg = Release|x64
+		{B6B1148B-8EA6-4AA3-B029-26858F2CB47A}.Release|x64.Build.0 = Release|x64
+		{B6B1148B-8EA6-4AA3-B029-26858F2CB47A}.Release|x86.ActiveCfg = Release|Win32
+		{B6B1148B-8EA6-4AA3-B029-26858F2CB47A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

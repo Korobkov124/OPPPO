@@ -157,12 +157,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\opppo_task1\Animal.cpp" />
-    <ClCompile Include="..\opppo_task1\Bird.cpp" />
-    <ClCompile Include="..\opppo_task1\Fish.cpp" />
-    <ClCompile Include="..\opppo_task1\Insect.cpp" />
-    <ClCompile Include="..\opppo_task1\opppo_task1.cpp" />
-    <ClCompile Include="..\opppo_task1\Parser.cpp" />
     <ClCompile Include="opppo_task1.tests.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -175,6 +169,9 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\opppo_task1.core\opppo_task1.core.vcxproj">
+      <Project>{b6b1148b-8ea6-4aa3-b029-26858f2cb47a}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\opppo_task1\opppo_task1.vcxproj">
       <Project>{f6c13f53-90d3-4151-abaf-b712faf27b01}</Project>
     </ProjectReference>

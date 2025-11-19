@@ -1,11 +1,4 @@
 ﻿  pch.cpp
-  Animal.cpp
-  Bird.cpp
-  Fish.cpp
-  Insect.cpp
-  opppo_task1.cpp
-  Parser.cpp
   opppo_task1.tests.cpp
-  Создание кода...
      Создается библиотека C:\Users\andre\Source\Repos\OPPPO\opppo_task1\x64\Debug\opppo_task1.tests.lib и объект C:\Users\andre\Source\Repos\OPPPO\opppo_task1\x64\Debug\opppo_task1.tests.exp
   opppo_task1.tests.vcxproj -> C:\Users\andre\Source\Repos\OPPPO\opppo_task1\x64\Debug\opppo_task1.tests.dll
