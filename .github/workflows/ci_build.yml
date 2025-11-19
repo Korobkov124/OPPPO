@@ -1,13 +1,13 @@
-name: Build project
+name: Build with Tests
 
 on:
   push:
-    branches: ["dev"]
+    branches: ["dev", "main"]
   pull_request:
     branches: ["main", "dev"]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: windows-latest
 
     steps:
@@ -17,20 +17,20 @@ jobs:
       - name: Setup Visual Studio
         uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Build solution without tests
+      - name: Build solution with tests
         shell: cmd
         run: |
-          msbuild opppo_task1\opppo_task1.sln /p:Configuration=Release /p:Platform=x64 /p:AdditionalOptions="/std:c++17" /p:BuildProjectReferences=true /m
+          msbuild opppo_task1\opppo_task1.sln /p:Configuration=Release /p:Platform=x64 /p:AdditionalOptions="/std:c++17" /m
 
-      - name: Find and run executable
+      - name: Run tests
         shell: cmd
         run: |
-          for /r %%i in (opppo_task1.exe) do (
-            echo "Found executable: %%i"
-            echo "Running application..."
-            "%%i"
-            exit /b 0
+          set TEST_EXE=
+          for /r %%i in (opppo_task1.tests.exe) do set TEST_EXE=%%i
+          if "%TEST_EXE%"=="" (
+            echo "❌ Test executable not found"
+            dir /s /b *.exe
+            exit 1
           )
-          echo "No executable found"
-          dir /s /b *.exe
-          exit 1
+          echo "Running tests: %TEST_EXE%"
+          "%TEST_EXE%"
