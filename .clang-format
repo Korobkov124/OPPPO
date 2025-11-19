@@ -34,6 +34,5 @@ ReflowComments: true
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeParens: ControlStatements
 
-Standard: Cpp17
 TabWidth: 4
 UseTab: Never
