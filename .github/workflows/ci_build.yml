@@ -1,10 +1,10 @@
-name: Build with Tests
+name: Build and Test
 
 on:
   push:
     branches: ["dev", "main"]
   pull_request:
-    branches: ["main", "dev"]
+    branches: ["dev", "main"]
 
 jobs:
   build-and-test:
@@ -14,23 +14,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Visual Studio
+      - name: Setup MSVC environment
         uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
 
-      - name: Build solution with tests
+      - name: Build solution
         shell: cmd
         run: |
-          msbuild opppo_task1\opppo_task1.sln /p:Configuration=Release /p:Platform=x64 /p:AdditionalOptions="/std:c++17" /m
+          msbuild opppo_task1\opppo_task1.sln ^
+            /p:Configuration=Release ^
+            /p:Platform=x64 ^
+            /p:AdditionalOptions="/std:c++17" ^
+            /m
 
       - name: Run tests
         shell: cmd
         run: |
-          set TEST_EXE=
-          for /r %%i in (opppo_task1.tests.exe) do set TEST_EXE=%%i
-          if "%TEST_EXE%"=="" (
+          set TEST_EXE=opppo_task1\x64\Release\opppo_task1.tests.exe
+          if not exist "%TEST_EXE%" (
             echo "❌ Test executable not found"
             dir /s /b *.exe
             exit 1
           )
-          echo "Running tests: %TEST_EXE%"
+          echo "✅ Running tests: %TEST_EXE%"
           "%TEST_EXE%"
