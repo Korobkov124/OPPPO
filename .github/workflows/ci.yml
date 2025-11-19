@@ -16,21 +16,6 @@ jobs:
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1
-
-      - name: Add pch.h to all cpp files if missing
-        shell: pwsh
-        run: |
-          $cppFiles = Get-ChildItem "opppo_task1" -Recurse -Filter *.cpp
-      
-          foreach ($file in $cppFiles) {
-              $content = Get-Content $file.FullName -Raw
-      
-              if ($content -notmatch '(?m)^\s*#\s*include\s*"pch\.h"') {
-                  Write-Host "Adding #include \"pch.h\" to $($file.FullName)"
-                  $newContent = "#include `"pch.h`"" + [Environment]::NewLine + $content
-                  Set-Content -Path $file.FullName -Value $newContent -Encoding UTF8
-              }
-          }
           
       - name: Build solution without PCH
         shell: pwsh
