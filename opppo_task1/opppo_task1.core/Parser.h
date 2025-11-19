@@ -2,15 +2,16 @@
 #define PARSER_H
 #include "pch.h"
 
-class Parser {
+class Parser
+{
 public:
-	static void ParseTxt(std::string filePath);
+    static void ParseTxt(std::string filePath);
 
-	static int parseDate(const std::string& date);
+    static int parseDate(const std::string& date);
 
-	static std::vector<std::string> splitString(const std::string& str, char delimiter);
+    static std::vector<std::string> splitString(const std::string& str, char delimiter);
 
 private:
-	static bool ValidateDate(int date, int month);
+    static bool ValidateDate(int date, int month);
 };
 #endif // !PARSER_H

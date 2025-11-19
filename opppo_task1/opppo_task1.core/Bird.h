@@ -1,12 +1,13 @@
 #include "Animal.h"
 
-class Bird : public Animal {
+class Bird : public Animal
+{
 public:
-	float fast = 0;
+    float fast = 0;
 
-	void PrintObj() override;
+    void PrintObj() override;
 
-	bool MatchObj(std::vector<std::string> command) override;
+    bool MatchObj(std::vector<std::string> command) override;
 
-	static void AddToArray(std::vector<std::string>& tokens, std::vector<std::unique_ptr<Animal>>& array);
+    static void AddToArray(std::vector<std::string>& tokens, std::vector<std::unique_ptr<Animal>>& array);
 };
