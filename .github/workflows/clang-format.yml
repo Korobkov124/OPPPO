@@ -1,43 +1,39 @@
-name: Format Code
+name: Clang-Format
 
 on:
   push:
-    branches: ["dev"]
+    branches: ["dev", "main"]
   pull_request:
-    branches: ["dev"]
+    branches: ["dev", "main"]
 
 jobs:
-  clang-format:
+  format:
     runs-on: windows-latest
+
+    env:
+      PAT: ${{ secrets.PAT }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ env.PAT }}
 
-      - name: Setup LLVM
+      - name: Install LLVM (clang-format)
         shell: pwsh
-        run: choco install llvm -y
+        run: |
+          choco install llvm -y
+          refreshenv
 
-      - name: Apply clang-format
+      - name: Run clang-format
         shell: pwsh
         run: |
           $clangFormat = "C:\Program Files\LLVM\bin\clang-format.exe"
-          Get-ChildItem -Path "opppo_task1" -Recurse -Include "*.cpp","*.h" | ForEach-Object {
-              & $clangFormat -i $_.FullName
+          Get-ChildItem -Path "." -Recurse -Include "*.cpp","*.h" | ForEach-Object {
+            & $clangFormat -i $_.FullName
           }
 
-      - name: Configure Git
-        shell: pwsh
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@users.noreply.github.com"
-
-      - name: Commit changes
-        shell: pwsh
-        run: |
-          git add .
-          git diff --cached --quiet || git commit -m "Apply clang-format"
-
-      - name: Push fixes
+      - name: Commit and push changes
         shell: pwsh
         run: |
           git config user.name "github-actions"
@@ -45,4 +41,5 @@ jobs:
           git checkout -b clang-format-fix
           git add .
           git commit -m "Apply clang-format" || echo "No changes to commit"
-          git push origin clang-format-fix
+          git remote set-url origin https://x-access-token:${{ env.PAT }}@github.com/Korobkov124/OPPPO.git
+          git push origin clang-format-fix --force
