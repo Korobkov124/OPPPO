@@ -24,6 +24,7 @@
     <ClInclude Include="Fish.h" />
     <ClInclude Include="Insect.h" />
     <ClInclude Include="Parser.h" />
+    <ClCompile Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animal.cpp" />
@@ -32,7 +33,6 @@
     <ClCompile Include="Insect.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="pch.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
