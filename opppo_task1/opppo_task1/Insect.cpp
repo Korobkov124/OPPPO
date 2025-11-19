@@ -28,14 +28,14 @@ void Insect::PrintObj() {
 	std::cout << "Имя: " << name << " Размер: " << size << "см^2" << " Дата открытия: " << dateOfOpening << std::endl;
 }
 
-void Insect::AddToArray(std::vector<std::string>& tokens, std::vector<Animal*>& array) {
-	Insect* currentInsect = new Insect;
+void Insect::AddToArray(std::vector<std::string>& tokens, std::vector<std::unique_ptr<Animal>>& array) {
+	auto currentInsect = std::make_unique<Insect>();
 	currentInsect->name = tokens[0];
 
 	if (stoi(tokens[1]) >= 0) {
 		currentInsect->size = stof(tokens[1]);
 		currentInsect->dateOfOpening = tokens[2];
-		array.push_back(currentInsect);
+		array.push_back(std::move(currentInsect));
 		return;
 	}
 	else {
