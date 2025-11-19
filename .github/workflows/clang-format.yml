@@ -1,46 +1,46 @@
-name: Clang-Format
+name: Format Code
 
 on:
   push:
-    branches: ["dev", "main"]
+    branches: ["dev"]
   pull_request:
-    branches: ["dev", "main"]
+    branches: ["dev"]
 
 jobs:
   clang-format:
     runs-on: windows-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Clang
+      - name: Setup LLVM
         shell: pwsh
         run: choco install llvm -y
 
       - name: Apply clang-format
         shell: pwsh
-        env:
-          GH_PAT: ${{ secrets.PAT }}
         run: |
           $clangFormat = "C:\Program Files\LLVM\bin\clang-format.exe"
-          if (-Not (Test-Path $clangFormat)) {
-            Write-Host "clang-format not found"
-            exit 1
-          }
-
           Get-ChildItem -Path "opppo_task1" -Recurse -Include "*.cpp","*.h" | ForEach-Object {
-            & $clangFormat -i $_.FullName
+              & $clangFormat -i $_.FullName
           }
 
-          git config --local user.name "github-actions"
-          git config --local user.email "github-actions@github.com"
+      - name: Configure Git
+        shell: pwsh
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+
+      - name: Commit changes
+        shell: pwsh
+        run: |
           git add .
+          git diff --cached --quiet || git commit -m "Apply clang-format"
 
-          git diff --cached --quiet
-          if ($LASTEXITCODE -ne 0) {
-            git commit -m "Apply clang-format"
-            git push https://$env:GH_PAT@github.com/Korobkov124/OPPPO.git HEAD:dev
-          } else {
-            Write-Host "No formatting changes detected"
-          }
+      - name: Push changes
+        shell: pwsh
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git remote set-url origin https://$env:GH_PAT@github.com/${{ github.repository }}.git
+          git push origin HEAD:dev
