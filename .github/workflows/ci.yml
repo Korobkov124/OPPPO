@@ -14,15 +14,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1
-          
-      - name: Build solution
-        shell: pwsh
+      - name: Setup Visual Studio
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Build solution without tests
+        shell: cmd
         run: |
-          msbuild "opppo_task1/opppo_task1.sln" `
-            /p:Configuration=Release `
-            /p:Platform=x64 `
-            /p:CL=/utf-8 `
-            /p:UsePrecompiledHeader=false `
-            /p:PrecompiledHeader=NotUsing
+          msbuild opppo_task1\opppo_task1.sln /p:Configuration=Release /p:Platform=x64 /p:AdditionalOptions="/std:c++17" /p:BuildProjectReferences=true /m
+
+      - name: Find and run executable
+        shell: cmd
+        run: |
+          for /r %%i in (opppo_task1.exe) do (
+            echo "Found executable: %%i"
+            echo "Running application..."
+            "%%i"
+            exit /b 0
+          )
+          echo "No executable found"
+          dir /s /b *.exe
+          exit 1
