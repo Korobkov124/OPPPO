@@ -17,12 +17,12 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1
 
-      - name: Build solution
+      - name: Build solution without PCH
         shell: pwsh
         run: |
           msbuild "opppo_task1/opppo_task1.sln" `
             /p:Configuration=Release `
             /p:Platform=x64 `
             /p:CL=/utf-8 `
-            /p:UsePrecompiledHeader=false
-
+            /p:UsePrecompiledHeader=false `
+            /p:PrecompiledHeader=NotUsing
