@@ -1,16 +1,18 @@
-#include <vector>
 #include <string>
+#include <vector>
+
 #include "Animal.h"
 
-class Insect : public Animal {
+class Insect : public Animal
+{
 public:
-	float size = 0;
+    float size = 0;
 
-	std::string dateOfOpening;
+    std::string dateOfOpening;
 
-	void PrintObj() override;
+    void PrintObj() override;
 
-	bool MatchObj(std::vector<std::string> command) override;
+    bool MatchObj(std::vector<std::string> command) override;
 
-	static void AddToArray(std::vector<std::string>& tokens, std::vector<std::unique_ptr<Animal>>& array);
+    static void AddToArray(std::vector<std::string>& tokens, std::vector<std::unique_ptr<Animal>>& array);
 };
