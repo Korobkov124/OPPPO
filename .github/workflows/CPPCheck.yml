@@ -1,0 +1,30 @@
+name: Static Code Analysis
+
+on:
+  push:
+    branches: ["dev", "main"]
+  pull_request:
+    branches: ["dev", "main"]
+
+jobs:
+  cppcheck:
+    name: Cppcheck Lint
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Cppcheck
+        shell: pwsh
+        run: |
+          choco install cppcheck -y
+          refreshenv
+
+      - name: Run Cppcheck
+        shell: pwsh
+        run: |
+          cppcheck --enable=all --suppress=missingIncludeSystem --inline-suppr "opppo_task1" 2> cppcheck_results.txt
+          Write-Host "Cppcheck results:"
+          Get-Content cppcheck_results.txt
+        continue-on-error: true
