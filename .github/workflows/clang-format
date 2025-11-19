@@ -1,0 +1,37 @@
+name: Auto Format Code
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["dev", "main"]
+
+jobs:
+  clang-format:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Clang
+        shell: pwsh
+        run: |
+          choco install llvm -y
+          refreshenv
+
+      - name: Format code
+        shell: pwsh
+        run: |
+          $clangFormat = "C:\Program Files\LLVM\bin\clang-format.exe"
+          Get-ChildItem -Path "opppo_task1" -Recurse -Include "*.cpp","*.h" | ForEach-Object {
+            & $clangFormat -i $_.FullName
+          }
+
+      - name: Commit formatted code
+        shell: pwsh
+        run: |
+          git config --local user.name "github-actions"
+          git config --local user.email "github-actions@github.com"
+          git add .
+          git commit -m "Apply clang-format" || Write-Host "No changes to commit"
+          git push
