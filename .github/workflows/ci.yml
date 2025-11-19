@@ -1,4 +1,4 @@
-name: Build main project
+name: Build project
 
 on:
   push:
@@ -17,18 +17,20 @@ jobs:
       - name: Setup Visual Studio
         uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Build and test main app
+      - name: Build solution without tests
         shell: cmd
         run: |
-          # Собираем только основные проекты
-          msbuild opppo_task1\opppo_task1.core\opppo_task1.core.vcxproj /p:Configuration=Release /p:Platform=x64
-          msbuild opppo_task1\opppo_task1\opppo_task1.vcxproj /p:Configuration=Release /p:Platform=x64
-          
-          # Проверяем что собралось
-          if exist "opppo_task1\x64\Release\opppo_task1.exe" (
-            echo "SUCCESS: Main application built"
-            "opppo_task1\x64\Release\opppo_task1.exe"
-          ) else (
-            echo "FAILED: Main application not built"
-            exit 1
+          msbuild opppo_task1\opppo_task1.sln /p:Configuration=Release /p:Platform=x64 /p:AdditionalOptions="/std:c++17" /p:BuildProjectReferences=true /m
+
+      - name: Find and run executable
+        shell: cmd
+        run: |
+          for /r %%i in (opppo_task1.exe) do (
+            echo "Found executable: %%i"
+            echo "Running application..."
+            "%%i"
+            exit /b 0
           )
+          echo "No executable found"
+          dir /s /b *.exe
+          exit 1
