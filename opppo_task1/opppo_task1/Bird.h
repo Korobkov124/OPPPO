@@ -9,5 +9,5 @@ public:
 
 	bool MatchObj(std::vector<std::string> command) override;
 
-	static void AddToArray(std::vector<std::string>& tokens, std::vector<Animal*>& array);
+	static void AddToArray(std::vector<std::string>& tokens, std::vector<std::unique_ptr<Animal>>& array);
 };

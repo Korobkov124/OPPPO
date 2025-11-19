@@ -18,13 +18,13 @@ void Bird::PrintObj() {
 	std::cout << "Имя: " << name << " Скорость полета: " << fast << "м/с" << std::endl;
 }
 
-void Bird::AddToArray(std::vector<std::string>& tokens, std::vector<Animal*>& array) {
-	Bird* currentBird = new Bird;
+void Bird::AddToArray(std::vector<std::string>& tokens, std::vector<std::unique_ptr<Animal>>& array) {
+	auto currentBird = std::make_unique<Bird>();
 	currentBird->name = tokens[0];
 
 	if (stof(tokens[1]) > 0) {
 		currentBird->fast = stof(tokens[1]);
-		array.push_back(currentBird);
+		array.push_back(std::move(currentBird));
 		return;
 	}
 	else {

@@ -26,7 +26,7 @@ namespace opppoTests {
 		std::is_same_v<T, Insect>;
 
 	template<AnimalsType T>
-	static void funcAddToArray(const std::vector<std::string>& testTokens, std::vector<Animal*>& testArray)
+	static void funcAddToArray(const std::vector<std::string>& testTokens, std::vector<std::unique_ptr<Animal>>& testArray)
 	{
 		auto tokens = testTokens;
 		T::AddToArray(tokens, testArray);
@@ -71,7 +71,7 @@ namespace opppoTests {
 	public:
 		TEST_METHOD(TestAddToArray) {
 
-			std::vector<Animal*> testArray;
+			std::vector<std::unique_ptr<Animal>> testArray;
 
 			funcAddToArray<Animal>(funcAddVect("Fish Karp 1", ' '), testArray);
 			funcAddToArray<Animal>(funcAddVect("Bird Scopa 10.2", ' '), testArray);
@@ -82,22 +82,22 @@ namespace opppoTests {
 			Assert::IsTrue(typeid(*testArray[2]) == typeid(Insect));
 		}
 		TEST_METHOD(TestInvalidAddToArray) {
-			auto laFuncAddToArray = [](const std::vector<std::string>& testTokens, std::vector<Animal*>& testArray) {
-				return [&testTokens, &testArray]() {funcAddToArray<Animal>(testTokens, testArray); };
+			auto laFuncAddToArray = [](const std::vector<std::string>& testTokens, std::vector<std::unique_ptr<Animal>>& testArray) {
+				return [testTokens, &testArray]() {funcAddToArray<Animal>(testTokens, testArray); };
 				};
 
-			std::vector<Animal*> testArray;
+			std::vector<std::unique_ptr<Animal>> testArray;
 
 			Assert::ExpectException<std::invalid_argument>(laFuncAddToArray(funcAddVect("Fishh Karp 1", ' '), testArray));
 			Assert::ExpectException<std::invalid_argument>(laFuncAddToArray(funcAddVect("Fish1 Karp 1", ' '), testArray));
 			Assert::ExpectException<std::invalid_argument>(laFuncAddToArray(funcAddVect("Ôèø Karp 1", ' '), testArray));
 		}
 		TEST_METHOD(TestDelObj) {
-			auto funcDelFromArray = [](std::vector<std::string> testCommand, std::vector<Animal*>& testArray) {
+			auto funcDelFromArray = [](std::vector<std::string> testCommand, std::vector<std::unique_ptr<Animal>>& testArray) {
 				return Animal::DelObj(testCommand, testArray);
 				};
 
-			std::vector<Animal*> testArray;
+			std::vector<std::unique_ptr<Animal>> testArray;
 
 			funcAddToArray<Animal>(funcAddVect("Fish Karp 1", ' '), testArray);
 			funcAddToArray<Animal>(funcAddVect("Bird Scopa 10.2", ' '), testArray);
@@ -115,7 +115,7 @@ namespace opppoTests {
 		}
 		TEST_METHOD(TestMatchObj) {
 
-			std::vector<Animal*> testArray;
+			std::vector<std::unique_ptr<Animal>> testArray;
 
 			funcAddToArray<Animal>(funcAddVect("Fish Karp 1", ' '), testArray);
 			funcAddToArray<Animal>(funcAddVect("Bird Scopa 10.2", ' '), testArray);
@@ -134,7 +134,7 @@ namespace opppoTests {
 	public:
 		TEST_METHOD(TestAddToArray) {
 
-			std::vector<Animal*> testArray;
+			std::vector<std::unique_ptr<Animal>> testArray;
 
 			funcAddToArray<Fish>(funcAddVect("Karp 1", ' '), testArray);
 			funcAddToArray<Fish>(funcAddVect("Lesch 2", ' '), testArray);
@@ -145,17 +145,17 @@ namespace opppoTests {
 			Assert::IsTrue(typeid(*testArray[2]) == typeid(Fish));
 		}
 		TEST_METHOD(TestInvalidAddToArray) {
-			auto laFuncAddToArray = [](const std::vector<std::string>& testTokens, std::vector<Animal*>& testArray) {
-				return [&testTokens, &testArray]() {return funcAddToArray<Fish>(testTokens, testArray); };
+			auto laFuncAddToArray = [](const std::vector<std::string>& testTokens, std::vector<std::unique_ptr<Animal>>& testArray) {
+				return [testTokens, &testArray]() {return funcAddToArray<Fish>(testTokens, testArray); };
 				};
 
-			std::vector<Animal*> testArray;
+			std::vector<std::unique_ptr<Animal>> testArray;
 
 			Assert::ExpectException<std::invalid_argument>(laFuncAddToArray(funcAddVect("Karp 4", ' '), testArray));
 		}
 		TEST_METHOD(TestMatchObj) {
 
-			std::vector<Animal*> testArray;
+			std::vector<std::unique_ptr<Animal>> testArray;
 
 			funcAddToArray<Fish>(funcAddVect("Karp 1", ' '), testArray);
 			funcAddToArray<Fish>(funcAddVect("Lesch 2", ' '), testArray);
@@ -175,7 +175,7 @@ namespace opppoTests {
 	public:
 		TEST_METHOD(TestAddToArray) {
 
-			std::vector<Animal*> testArray;
+			std::vector<std::unique_ptr<Animal>> testArray;
 
 			funcAddToArray<Bird>(funcAddVect("Eagle 1", ' '), testArray);
 			funcAddToArray<Bird>(funcAddVect("Pigeon 2", ' '), testArray);
@@ -186,17 +186,17 @@ namespace opppoTests {
 			Assert::IsTrue(typeid(*testArray[2]) == typeid(Bird));
 		}
 		TEST_METHOD(TestInvalidAddToArray) {
-			auto laFuncAddToArray = [](const std::vector<std::string>& testTokens, std::vector<Animal*>& testArray) {
-				return [&testTokens, &testArray]() {return funcAddToArray<Bird>(testTokens, testArray); };
+			auto laFuncAddToArray = [](const std::vector<std::string>& testTokens, std::vector<std::unique_ptr<Animal>>& testArray) {
+				return [testTokens, &testArray]() {return funcAddToArray<Bird>(testTokens, testArray); };
 				};
 
-			std::vector<Animal*> testArray;
+			std::vector<std::unique_ptr<Animal>> testArray;
 
 			Assert::ExpectException<std::invalid_argument>(laFuncAddToArray(funcAddVect("Bird asd", ' '), testArray));
 		}
 		TEST_METHOD(TestMatchObj) {
 
-			std::vector<Animal*> testArray;
+			std::vector<std::unique_ptr<Animal>> testArray;
 
 			funcAddToArray<Bird>(funcAddVect("Eagle 10.2", ' '), testArray);
 			funcAddToArray<Bird>(funcAddVect("Pigeon 15.3", ' '), testArray);
@@ -215,7 +215,7 @@ namespace opppoTests {
 	public:
 		TEST_METHOD(TestAddToArray) {
 
-			std::vector<Animal*> testArray;
+			std::vector<std::unique_ptr<Animal>> testArray;
 
 			funcAddToArray<Insect>(funcAddVect("Bug 10 10.10.2020", ' '), testArray);
 			funcAddToArray<Insect>(funcAddVect("Cockroach 7 15.01.1900", ' '), testArray);
@@ -226,17 +226,17 @@ namespace opppoTests {
 			Assert::IsTrue(typeid(*testArray[2]) == typeid(Insect));
 		}
 		TEST_METHOD(TestInvalidAddToArray) {
-			auto laFuncAddToArray = [](const std::vector<std::string>& testTokens, std::vector<Animal*>& testArray) {
-				return [&testTokens, &testArray]() {return funcAddToArray<Insect>(testTokens, testArray); };
+			auto laFuncAddToArray = [](const std::vector<std::string>& testTokens, std::vector<std::unique_ptr<Animal>>& testArray) {
+				return [testTokens, &testArray]() {return funcAddToArray<Insect>(testTokens, testArray); };
 				};
 
-			std::vector<Animal*> testArray;
+			std::vector<std::unique_ptr<Animal>> testArray;
 
 			Assert::ExpectException<std::invalid_argument>(laFuncAddToArray(funcAddVect("Bug asd 10.10.2020", ' '), testArray));
 		}
 		TEST_METHOD(TestMatchObj) {
 
-			std::vector<Animal*> testArray;
+			std::vector<std::unique_ptr<Animal>> testArray;
 
 			funcAddToArray<Insect>(funcAddVect("Bug 10 10.10.2020", ' '), testArray);
 			funcAddToArray<Insect>(funcAddVect("Cockroach 7 15.01.1900", ' '), testArray);

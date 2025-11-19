@@ -29,14 +29,14 @@ void Fish::PrintObj() {
 	std::cout << "Имя: " << name << " Место обитания: " << placeStr << std::endl;
 }
 
-void Fish::AddToArray(std::vector<std::string>& tokens, std::vector<Animal*>& array) {
-	Fish* currentFish = new Fish;
+void Fish::AddToArray(std::vector<std::string>& tokens, std::vector<std::unique_ptr<Animal>>& array) {
+	auto currentFish = std::make_unique<Fish>();
 	currentFish->name = tokens[0];
 
 	if (stoi(tokens[1]) >= Fish::river &&
 		stoi(tokens[1]) <= Fish::sea) {
 		currentFish->livingPlace = static_cast<Fish::placeEnum>(stoi(tokens[1]));
-		array.push_back(currentFish);
+		array.push_back(std::move(currentFish));
 		return;
 	}
 	else {
