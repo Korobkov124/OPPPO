@@ -19,6 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+  <ClCompile Include="pch.cpp">
+    <PrecompiledHeader>Create</PrecompiledHeader>
+  </ClCompile>
     <ClInclude Include="Animal.h" />
     <ClInclude Include="Bird.h" />
     <ClInclude Include="Fish.h" />
