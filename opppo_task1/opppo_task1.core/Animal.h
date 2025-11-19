@@ -1,3 +1,5 @@
+#ifndef ANIMAL_H
+#define ANIMAL_H
 #include <iostream>
 #include <string>
 #include <vector>
@@ -19,3 +21,4 @@ public:
 	
 	virtual ~Animal() = default;
 };
+#endif // ANIMAL_H

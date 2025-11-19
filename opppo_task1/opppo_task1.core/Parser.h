@@ -1,3 +1,5 @@
+#ifndef PARSER_H
+#define PARSER_H
 #include "pch.h"
 
 class Parser {
@@ -11,3 +13,4 @@ public:
 private:
 	static bool ValidateDate(int date, int month);
 };
+#endif // !PARSER_H
