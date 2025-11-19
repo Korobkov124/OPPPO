@@ -57,3 +57,7 @@ void Animal::PrintArray(std::vector<Animal*> array)
 		array[i]->PrintObj();
 	}
 }
+
+void test() {
+
+}
