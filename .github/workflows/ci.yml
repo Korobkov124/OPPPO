@@ -14,14 +14,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build with Visual Studio
+      - name: Setup Visual Studio
         uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: x64
 
-      - name: Build solution
+      - name: Build and test
+        shell: cmd
         run: |
-          msbuild "opppo_task1\opppo_task1.sln" ^
-            /p:Configuration=Release ^
-            /p:Platform=x64 ^
-            /p:AdditionalOptions="/std:c++17"
+          msbuild opppo_task1\opppo_task1.sln /p:Configuration=Release /p:Platform=x64 /p:AdditionalOptions="/std:c++17"
+          if exist opppo_task1\opppo_task1.tests\x64\Release\opppo_task1.tests.exe (
+            opppo_task1\opppo_task1.tests\x64\Release\opppo_task1.tests.exe
+          )
