@@ -37,10 +37,12 @@ jobs:
           git add .
           git diff --cached --quiet || git commit -m "Apply clang-format"
 
-      - name: Push changes
+      - name: Push fixes
         shell: pwsh
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
-          git remote set-url origin https://$env:GH_PAT@github.com/${{ github.repository }}.git
-          git push origin HEAD:dev
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git checkout -b clang-format-fix
+          git add .
+          git commit -m "Apply clang-format" || echo "No changes to commit"
+          git push origin clang-format-fix
