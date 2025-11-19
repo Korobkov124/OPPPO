@@ -3,9 +3,6 @@
 #include <string>
 #include <vector>
 #include "Parser.h"
-#include "Fish.h"
-#include "Bird.h"
-#include "Insect.h"
 
 class Animal {
 public:
@@ -20,4 +17,6 @@ public:
 	virtual void PrintObj();
 
 	static void PrintArray(const std::vector<std::unique_ptr<Animal>>& array);
+	
+	virtual ~Animal() = default;
 };
