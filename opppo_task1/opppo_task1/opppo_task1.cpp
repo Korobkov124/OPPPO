@@ -1,5 +1,4 @@
-﻿#include "pch.h"
-#include <clocale>
+﻿#include <clocale>
 #include "../opppo_task1.core/Parser.h"
 
 int main() {
