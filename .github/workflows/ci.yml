@@ -14,28 +14,85 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup MSBuild
+      - name: Setup Visual Studio and MSBuild
         uses: microsoft/setup-msbuild@v1
+        with:
+          vs-version: '[17.0,18.0)'  # Конкретная версия VS 2022
 
-      - name: Build solution
+      - name: Check compiler version
         shell: pwsh
         run: |
-          # Собираем основной проект
+          echo "Checking compiler version..."
+          cl.exe 2>&1 | Select-String "Version" || echo "Compiler not found"
+
+      - name: Restore NuGet packages
+        shell: pwsh
+        run: |
+          nuget restore "opppo_task1/opppo_task1.sln"
+
+      - name: Build solution with detailed logging
+        shell: pwsh
+        run: |
           msbuild "opppo_task1/opppo_task1.sln" `
             /p:Configuration=Release `
             /p:Platform=x64 `
             /p:PlatformToolset=v143 `
-            /p:CppStandard=c++17 `
+            /p:LanguageStandard=stdcpp17 `
+            /p:UsePrecompiledHeader=false `
+            /p:PrecompiledHeader=NotUsing `
+            /p:WarningLevel=0 `  # Отключаем warnings для чистоты лога
+            /p:TreatWarningAsError=false `
+            /verbosity:detailed `  # Детальный лог для отладки
+            /m
+
+      - name: Build solution with C++17 features
+        shell: pwsh
+        run: |
+          msbuild "opppo_task1/opppo_task1.sln" `
+            /p:Configuration=Release `
+            /p:Platform=x64 `
+            /p:PlatformToolset=v143 `
+            /p:AdditionalOptions="/std:c++17" `  # Явное указание стандарта
             /p:UsePrecompiledHeader=false `
             /p:PrecompiledHeader=NotUsing `
             /m
 
-      - name: Run tests (optional)
+      - name: List build outputs
         shell: pwsh
         run: |
-          $testDll = "opppo_task1/opppo_task1.tests/x64/Release/opppo_task1.tests.exe"
-          if (Test-Path $testDll) {
-            & $testDll
-          } else {
-            Write-Host "Test executable not found"
+          echo "Build outputs:"
+          Get-ChildItem -Path "opppo_task1" -Recurse -Include *.exe,*.dll,*.lib | ForEach-Object { $_.FullName }
+
+      - name: Run tests
+        shell: pwsh
+        run: |
+          $testDlls = @(
+            "opppo_task1/opppo_task1.tests/x64/Release/opppo_task1.tests.exe",
+            "opppo_task1/x64/Release/opppo_task1.tests.exe",
+            "opppo_task1/opppo_task1.tests/bin/x64/Release/opppo_task1.tests.exe"
+          )
+          
+          $found = $false
+          foreach ($testDll in $testDlls) {
+            if (Test-Path $testDll) {
+              Write-Host "Running tests from: $testDll"
+              & $testDll
+              $found = $true
+              break
+            }
           }
+          
+          if (-not $found) {
+            Write-Host "Test executable not found. Available files:"
+            Get-ChildItem -Path "opppo_task1" -Recurse -Include *.exe,*.dll | ForEach-Object { $_.FullName }
+          }
+
+      - name: Upload build artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-failure-logs
+          path: |
+            **/*.log
+            **/*.binlog
+          retention-days: 7
