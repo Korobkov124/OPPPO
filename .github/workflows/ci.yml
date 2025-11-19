@@ -16,4 +16,8 @@ jobs:
         uses: microsoft/setup-msbuild@v1
 
       - name: Build solution
-        run: msbuild opppo_task1/opppo_task1.sln /p:Configuration=Release
+        shell: powershell
+        run: |
+          & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
+          
+          msbuild "opppo_task1/opppo_task1.sln" /t:Rebuild /p:Configuration=Release /p:Platform=x64 /p:CharacterSet=Unicode
