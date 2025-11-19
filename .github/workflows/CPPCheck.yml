@@ -14,11 +14,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Cppcheck
+      - name: Install Cppcheck via Chocolatey
         shell: pwsh
-        run: choco install cppcheck -y
-      
+        run: |
+          choco install cppcheck -y
+          refreshenv  # чтобы путь к cppcheck обновился
+
       - name: Run Cppcheck
         shell: pwsh
-        run: cppcheck --enable=all --inline-suppr --std=c++17 "opppo_task1" 2> cppcheck_results.txt
-
+        run: |
+          Write-Host "Running Cppcheck..."
+          cppcheck --enable=all --inline-suppr --std=c++17 "opppo_task1" 2> cppcheck_results.txt
+          if (Test-Path cppcheck_results.txt) {
+            Write-Host "Cppcheck results:"
+            Get-Content cppcheck_results.txt
+          }
