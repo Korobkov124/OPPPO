@@ -3,7 +3,7 @@
 #include "Bird.h"
 #include "Insect.h"
 
-void Animal::AddToArray(std::vector<std::string>& tokens, std::vector<Animal*>& array) {
+void Animal::AddToArray(std::vector<std::string>& tokens, std::vector<std::unique_ptr<Animal>>& array) {
 	if (tokens[0] == "Fish" && tokens.size() == 3) {
 		tokens = std::vector<std::string>(tokens.begin() + 1, tokens.end());
 		Fish::AddToArray(tokens, array);
@@ -26,10 +26,10 @@ void Animal::AddToArray(std::vector<std::string>& tokens, std::vector<Animal*>& 
 	}
 }
 
-void Animal::DelObj(std::vector<std::string> command, std::vector<Animal*>& array) {
+void Animal::DelObj(std::vector<std::string> command, std::vector<std::unique_ptr<Animal>>& array) {
 	array.erase(
 		remove_if(array.begin(), array.end(),
-			[&](Animal* obj) {
+			[&](const std::unique_ptr<Animal>& obj) {
 				return obj->MatchObj(command);
 			}),
 		array.end()
@@ -50,7 +50,7 @@ void Animal::PrintObj() {
 	std::cout << "Имя: " << name << std::endl;
 }
 
-void Animal::PrintArray(std::vector<Animal*> array)
+void Animal::PrintArray(const std::vector<std::unique_ptr<Animal>>& array)
 {
 	std::cout << "---------- Вывод элементов контейнера в консоль ----------\n";
 	for (int i = 0; i < array.size(); i++) {

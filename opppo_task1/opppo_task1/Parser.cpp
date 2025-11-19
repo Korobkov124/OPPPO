@@ -31,7 +31,7 @@ void Parser::ParseTxt(std::string filePath) {
 	std::string currentLine;
 	std::ifstream iftxt(filePath);
 	int lineCount = 0;
-	std::vector<Animal*> array;
+	std::vector<std::unique_ptr<Animal>> array;
 
 	if (iftxt.is_open()) {
 
