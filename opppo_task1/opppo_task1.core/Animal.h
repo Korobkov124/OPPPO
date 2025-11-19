@@ -3,6 +3,9 @@
 #include <string>
 #include <vector>
 #include "Parser.h"
+#include "Fish.h"
+#include "Bird.h"
+#include "Insect.h"
 
 class Animal {
 public:

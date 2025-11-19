@@ -1,12 +1,8 @@
-﻿  Проверка источников на наличие зависимостей модуля…
-  pch.h
-  Компиляция…
-  pch.h
+﻿  pch.cpp
   Animal.cpp
   Bird.cpp
   Fish.cpp
   Insect.cpp
   Parser.cpp
-  pch.cpp
   Создание кода...
   opppo_task1.core.vcxproj -> C:\Users\andre\Source\Repos\OPPPO\opppo_task1\x64\Debug\opppo_task1.core.lib
