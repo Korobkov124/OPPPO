@@ -251,3 +251,7 @@ TEST_METHOD(TestMatchObj)
 }
 ;
 }
+
+void test() {
+
+};
