@@ -1,19 +1,20 @@
-@startuml work1
+@startuml work1_updated
 skinparam classAttributeIconSize 0
 
 class Animal {
     - name : string
     --
-    + AddToArray(tokens: vector<string>, array: vector<Animal*>&) : void
-    + DelObj(tokens: vector<string>, array: vector<Animal*>&) : void
+    + AddToArray(tokens: vector<string>, array: vector<unique_ptr<Animal>>&) : void
+    + DelObj(tokens: vector<string>, array: vector<unique_ptr<Animal>>&) : void
     + MatchObj(command: vector<string>) : bool
     + PrintObj() : void
-    + PrintArray(array: vector<Animal*>) : void
+    + PrintArray(array: vector<unique_ptr<Animal>>&) : void
 }
 
 class Fish {
     - livingPlace : placeEnum
     --
+    + AddToArray(tokens: vector<string>, array: vector<unique_ptr<Animal>>&) : void
     + PrintObj() : void
     + MatchObj(command: vector<string>) : bool
 }
@@ -21,6 +22,7 @@ class Fish {
 class Bird {
     - fast : float
     --
+    + AddToArray(tokens: vector<string>, array: vector<unique_ptr<Animal>>&) : void
     + PrintObj() : void
     + MatchObj(command: vector<string>) : bool
 }
@@ -29,6 +31,7 @@ class Insect {
     - size : float
     - dateOfOpening : string
     --
+    + AddToArray(tokens: vector<string>, array: vector<unique_ptr<Animal>>&) : void
     + PrintObj() : void
     + MatchObj(command: vector<string>) : bool
 }
