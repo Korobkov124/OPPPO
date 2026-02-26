@@ -18,7 +18,7 @@
 </details>
 
 <details>
-<summary><strong>Практическая работа №2</strong></summary>
+<summary><strong><s>Практическая работа №2</s></strong></summary>
 
 ### ПР1 при помощи функционального языка программирования
 
@@ -27,7 +27,7 @@
 </details>
 
 <details>
-<summary><strong>Практическая работа №3</strong></summary>
+<summary><strong><s>Практическая работа №3</s></strong></summary>
 
 ### ПР1 рефакторинг + Git
 
@@ -50,7 +50,7 @@
 </details>
 
 <details>
-<summary><strong>Практическая работа №4</strong></summary>
+<summary><strong><s>Практическая работа №4</s></strong></summary>
 
 ### ПР3 + модульные тесты
 
